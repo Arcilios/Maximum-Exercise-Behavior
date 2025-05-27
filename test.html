@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Respiration & Heart Rate Animation</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f8f8f8;
+    }
+
+    .controls {
+      margin: 20px;
+    }
+
+    label {
+      margin: 10px;
+      display: inline-block;
+    }
+
+    img {
+      width: 150px;
+      height: auto;
+      margin: 20px;
+    }
+
+    .breath {
+      animation: breathing 4s ease-in-out infinite;
+    }
+
+    .heartbeat {
+      animation: heartbeat 1s infinite;
+    }
+
+    @keyframes breathing {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.3); }
+      70% { transform: scale(1); }
+    }
+
+    .animation-container {
+      position: relative;
+      height: 300px;
+    }
+
+    .vo2-dot {
+      position: absolute;
+      left: 40%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: blue;
+      animation: vo2flow 2s linear infinite;
+    }
+
+    @keyframes vo2flow {
+      0% { top: 0; opacity: 1; }
+      100% { top: 120px; opacity: 0; }
+    }
+
+    .vco2-dot {
+      position: absolute;
+      left: 60%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: red;
+      animation: co2flow 2s linear infinite;
+    }
+
+    @keyframes co2flow {
+      0% { top: 120px; opacity: 0; }
+      100% { top: 0; opacity: 1; }
+    }
+
+    .bubble {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 12px;
+      height: 12px;
+      background: lightblue;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: bubbleUp 3s ease-out infinite;
+    }
+
+    @keyframes bubbleUp {
+      0% { transform: translateY(0); opacity: 0.8; }
+      100% { transform: translateY(-150px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Control Respiration, Heart Rate and Gas Exchange</h1>
+
+  <div class="controls">
+    <label>RR (breaths/min): <input type="number" id="rrInput" value="12"></label>
+    <label>HR (beats/min): <input type="number" id="hrInput" value="72"></label>
+    <label>VE (L/min): <input type="number" id="veInput" value="10"></label>
+    <label>VO₂ (mL/min): <input type="number" id="vo2Input" value="350"></label>
+    <label>VCO₂ (mL/min): <input type="number" id="vco2Input" value="320"></label>
+    <button onclick="updateRates()">Update</button>
+  </div>
+
+  <div>
+    <img src="lung.png" id="lungs" class="breath">
+    <img src="heart.png" id="heart" class="heartbeat">
+  </div>
+
+  <div class="animation-container" id="animationArea"></div>
+
+  <script>
+    function updateRates() {
+      const rr = parseFloat(document.getElementById('rrInput').value);
+      const hr = parseFloat(document.getElementById('hrInput').value);
+      const ve = parseFloat(document.getElementById('veInput').value);
+      const vo2 = parseFloat(document.getElementById('vo2Input').value);
+      const vco2 = parseFloat(document.getElementById('vco2Input').value);
+
+      document.getElementById('lungs').style.animationDuration = (60 / rr).toFixed(2) + 's';
+      document.getElementById('heart').style.animationDuration = (60 / hr).toFixed(2) + 's';
+
+      const container = document.getElementById('animationArea');
+      container.innerHTML = '';  
+
+      for (let i = 0; i < ve / 2; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.style.left = `${40 + Math.random() * 20}%`;
+        bubble.style.animationDuration = `${2 + Math.random()}s`;
+        container.appendChild(bubble);
+      }
+
+      for (let i = 0; i < vo2 / 100; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'vo2-dot';
+        dot.style.left = `${30 + Math.random() * 10}%`;
+        dot.style.animationDuration = `${1.5 + Math.random()}s`;
+        container.appendChild(dot);
+      }
+      for (let i = 0; i < vco2 / 100; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'vco2-dot';
+        dot.style.left = `${60 + Math.random() * 10}%`;
+        dot.style.animationDuration = `${1.5 + Math.random()}s`;
+        container.appendChild(dot);
+      }
+    }
+
+    updateRates();
+  </script>
+
+</body>
+</html>
