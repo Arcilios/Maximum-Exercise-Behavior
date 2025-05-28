@@ -170,7 +170,7 @@ let bins = d3.bin()
           const value = +slider.value;
           me[attribute] = value;
           caption.innerText = `The distribution of the top 100 longest lasting runners' 
-            ${slider.dataset.attribute} vs. your selected ${slider.dataset.attribute}`
+            ${slider.dataset.attribute} vs. your selected ${slider.dataset.attribute}.`
       
           // Redraw histogram for the changed attribute
           drawD3HistogramObjectData(data, attribute, 5, 10, 4, 20, me);
