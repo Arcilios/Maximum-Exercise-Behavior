@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>D3 Histogram – Only Axis Label</title>
+  <script type = "module" src = "global.js"> </script>
+  <link rel = "stylesheet" href = "styles.css">
+</head>
+<body>
+<div id = "trait-select">
+  <text>
+  <h2> Can you craft the runner the most endurance?</h2>
+</text>
+  <div id = "toggles">
+  <label>Age: <input id = "ageSlider" data-attribute="Age" type = "range" min = "10" max = "69" value = "40"><em> 40 </em><em>years old</em></label> 
+  <label>Weight: <input id = "weightSlider" data-attribute="Weight" type = "range" min = "50" max = "99" value = "75"><em>75 </em><em>kg</em></label>
+  <label>Height: <input id = "heightSlider" data-attribute="Height" type = "range" min="150" max = "199" value = "175"><em>175 </em><em>cm</em></label>
+  </div>
+  <div class="tooltip" id="tooltip"></div>
+  <svg id="histogram" width="750" height="500"></svg>
+</div>
+<div id = "act-2">
+<button id = "submit">Create Runner!</button>
+</div>
+
+
+
+</body>
+</html>
