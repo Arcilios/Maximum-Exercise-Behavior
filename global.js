@@ -177,7 +177,7 @@ let bins = d3.bin()
 
 
 let me = {ID : 'You', Age : 20, Weight : 50 ,Height : 150 ,Sex : 0.5};
-let data = await loadCSV('/output.csv');
+let data = await loadCSV('./output.csv');
 console.log(data);
 createLabels();
 //drawD3HistogramObjectData(data, "time"); 
@@ -288,9 +288,9 @@ function ruochen(person){
 
 let submit = d3.select("#submit");
 let stage = d3.select('#act-2');
-let data2 = await loadCSV("/demo.csv");
+let data2 = await loadCSV("./demo.csv");
 console.log(stage);
-let phys = await loadCSV("/demo2.csv");
+let phys = await loadCSV("./demo2.csv");
 
 submit.on("click", (event) => {
   d3.select('#act-2')
