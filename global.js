@@ -176,7 +176,7 @@ let bins = d3.bin()
   }
 
 
-let me = {ID : 'You', Age : 20, Weight : 50 ,Height : 150 ,Sex : 0.5};
+let me = {ID : 'You', Age : 35, Weight : 75 ,Height : 175 ,Sex : 0.5};
 let data = await loadCSV('output.csv');
 console.log(data);
 createLabels();
