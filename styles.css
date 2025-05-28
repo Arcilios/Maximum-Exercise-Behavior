@@ -32,7 +32,7 @@ body {
 
 #trait-select{
     display: grid;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 10% 80% 10%;
     grid-template-columns: 55% 40% ;
     gap :1em;
     h2{
@@ -58,6 +58,9 @@ body {
         height: 100%;
         grid-row-start: 2;
         grid-column-start: 1;
+    }
+    #caption{
+      grid-row-start: 3;
     }
 
 }
@@ -206,3 +209,4 @@ img {
   height: 30%; 
   gap: 150px;
 }
+

@@ -8,18 +8,19 @@
 </head>
 <body>
 <div id = "trait-select">
-  <text>
   <h2> Can you craft the runner the most endurance?</h2>
-</text>
+
   <div id = "toggles">
-  <label>Age: <input id = "ageSlider" data-attribute="Age" type = "range" min = "10" max = "59" value = "35"><em> 40 </em><em>years old</em></label> 
+  <label>Age: <input id = "ageSlider" data-attribute="Age" type = "range" min = "10" max = "59" value = "35"><em> 35 </em><em>years old</em></label> 
   <label>Weight: <input id = "weightSlider" data-attribute="Weight" type = "range" min = "50" max = "99" value = "75"><em>75 </em><em>kg</em></label>
   <label>Height: <input id = "heightSlider" data-attribute="Height" type = "range" min="150" max = "199" value = "175"><em>175 </em><em>cm</em></label>
   </div>
   <div class="tooltip" id="tooltip"></div>
-  <figure>
+  
   <svg id="histogram" width="750" height="500"></svg>
-  </figure>
+
+  <p id= "caption"></p>
+  
 </div>
 <div id = "act-2">
 <button id = "submit">Create Runner!</button>

@@ -155,6 +155,7 @@ let bins = d3.bin()
         rangeInput.addEventListener
       });
       */
+    let caption = document.querySelector("#caption");
     document.querySelectorAll('input[type="range"]').forEach(slider => {
         const em = slider.nextElementSibling; // the <em> element
       
@@ -168,6 +169,8 @@ let bins = d3.bin()
           const attribute = slider.dataset.attribute;
           const value = +slider.value;
           me[attribute] = value;
+          caption.innerText = `The distribution of the top 100 longest lasting runners' 
+            ${slider.dataset.attribute} vs. your selected ${slider.dataset.attribute}`
       
           // Redraw histogram for the changed attribute
           drawD3HistogramObjectData(data, attribute, 5, 10, 4, 20, me);
