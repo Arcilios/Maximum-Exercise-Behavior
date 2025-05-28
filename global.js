@@ -7,11 +7,11 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
     const width = +svg.attr("width");
     const height = +svg.attr("height");
-    const margin = { top: 40, right: 30, bottom: 80, left: 50 };
-    const plotWidth = width - margin.left - margin.right;
-    const plotHeight = height - margin.top - margin.bottom;
+    // const margin = { top: 40, right: 30, bottom: 80, left: 50 };
+    const plotWidth = width;
+    const plotHeight = height;
 
-    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const g = svg.append("g");//.attr("transform", `translate(${margin.left},${margin.top})`);
 
     let filteredData = data.filter(d => typeof d[attribute] === "number");
 
@@ -37,8 +37,8 @@ let bins = d3.bin()
         const row = j % maxSquaresPerColumn;
 
         const squareX = x + col * (squareSize + gap);
-        const squareY = plotHeight - row * (squareSize + gap);
-
+        const squareY = plotHeight - 200 - row * (squareSize + gap);
+        
         g.append("rect")
           .attr("x", squareX)
           .attr("y", squareY - squareSize)
@@ -67,7 +67,7 @@ let bins = d3.bin()
       // Bin label (below bar)
       g.append("text")
         .attr("x", x + squareSize / 2)
-        .attr("y", plotHeight + 18)
+        .attr("y", plotHeight - 200 + 18)
         .attr("class", "bar-label")
         .text(`${bin.x0.toFixed(1)} - ${bin.x1.toFixed(1)}`);
     });
@@ -79,7 +79,7 @@ let bins = d3.bin()
     g.append("text")
       .attr("class", "x-axis-label")
       .attr("x", plotWidth / 2)
-      .attr("y", plotHeight + 50)
+      .attr("y", plotHeight + 50 - 200)
       .text(attribute.charAt(0).toUpperCase() + attribute.slice(1)); // Capitalize
 
       if (specialValue !== null && !isNaN(specialValue)) {
@@ -93,7 +93,7 @@ let bins = d3.bin()
           const row = bin.length % maxSquaresPerColumn;
       
           const squareX = x + col * (squareSize + gap);
-          const squareY = plotHeight - row * (squareSize + gap);
+          const squareY = plotHeight - 200 - row * (squareSize + gap);
       
           g.append("rect")
             .attr("x", squareX)
@@ -117,6 +117,7 @@ let bins = d3.bin()
             });
         }
       }
+
       
   }
 
@@ -169,8 +170,8 @@ let bins = d3.bin()
           const attribute = slider.dataset.attribute;
           const value = +slider.value;
           me[attribute] = value;
-          caption.innerText = `The distribution of the top 100 longest lasting runners' 
-            ${slider.dataset.attribute} vs. your selected ${slider.dataset.attribute}.`
+          const lowercase = slider.dataset.attribute.toLowerCase();
+          caption.innerText = `The distribution of the top 100 longest lasting runners' ${lowercase} vs. your selected ${lowercase}.`
       
           // Redraw histogram for the changed attribute
           drawD3HistogramObjectData(data, attribute, 5, 10, 4, 20, me);
@@ -322,7 +323,7 @@ let box = d3.select('.tuple-display');
 entries.forEach(([key, value]) => {
   box.append('div')
     .style('margin', '4px 0')
-    .html(`<strong>Mean ${key}:</strong> ${value}`);
+    .html(`<strong>Mean ${key}:</strong> ${value.toFixed(2)}`);
 });
 
 const container = document.querySelector('#act-2'); // replace with your actual selector
