@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Maximum Excercise Behavior</title>
+  <script type = "module" src = "global.js"> </script>
+  <link rel = "stylesheet" href = "styles.css">
+</head>
+<body>
+  <h1 id="title">How Long Can You Run?</h1>
+  <h2>Input your age, weight, and height</h2>
+  <div id = "trait-select">
+    <svg id="histogram" width="700" height="500"></svg>
+    <div id = "toggles">
+      <label>Age: <input id = "ageSlider" data-attribute="Age" type = "range" min = "10" max = "59" value = "35"><em>35</em><em>years old</em></label> 
+      <label>Weight: <input id = "weightSlider" data-attribute="Weight" type = "range" min = "50" max = "99" value = "75"><em>75</em><em> kg</em></label>
+      <label>Height: <input id = "heightSlider" data-attribute="Height" type = "range" min="150" max = "199" value = "175"><em>175</em><em> cm</em></label>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
+   
+    <p id= "caption">
+      The distribution of the top 100 longest lasting runners' height vs. your selected height.
+    </p>
+    
+  </div>
+  <div id = "act-2">
+    <button id = "submit">Create Runner!</button>
+  </div>
+</body>
+</html>

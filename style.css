@@ -1,0 +1,125 @@
+:root {
+    --accent-color: rgb(0, 128, 128);
+    --color: #f8f8f8;
+}
+
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background: var(--color);
+    max-width: 140ch;
+    margin-inline: auto;
+    margin-top: 0;   
+}
+
+h1 {
+    font-size: 300%;
+    font-family: Verdana;
+    color: var(--color);
+    background-color: var(--accent-color);
+    margin-top: 0px;
+    border-top: solid var(--accent-color) 40px;
+    border-bottom: solid var(--accent-color) 40px;
+}
+
+.controls {
+    margin: 20px;
+}
+
+label {
+    margin: 10px;
+    display: inline-block;
+}
+
+#update {
+    font-size: 125%;
+    padding: 0.75em;
+    border-radius: 8px;
+    border: solid var(--accent-color);
+    transition-duration: 0.4s;
+}   
+
+#update:hover {
+  background-color: var(--accent-color);
+  color: var(--color);
+  cursor: pointer; 
+}
+
+img {
+    width: 150px;
+    height: auto;
+    margin: 20px;
+}
+
+.breath {
+    animation: breathing 4s ease-in-out infinite;
+}
+
+.heartbeat {
+    animation: heartbeat 1s infinite;
+}
+
+@keyframes breathing {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.3); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.3); }
+    70% { transform: scale(1); }
+}
+
+.animation-container {
+    position: relative;
+    height: 300px;
+}
+
+.vo2-dot {
+    position: absolute;
+    left: 40%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: blue;
+    animation: vo2flow 2s linear infinite;
+}
+
+@keyframes vo2flow {
+    0% { top: 0; opacity: 1; }
+    100% { top: 120px; opacity: 0; }
+}
+
+.vco2-dot {
+    position: absolute;
+    left: 60%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    animation: co2flow 2s linear infinite;
+}
+
+@keyframes co2flow {
+    0% { top: 120px; opacity: 0; }
+    100% { top: 0; opacity: 1; }
+}
+
+.bubble {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    background: lightblue;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: bubbleUp 3s ease-out infinite;
+}
+
+@keyframes bubbleUp {
+    0% { transform: translateY(0); opacity: 0.8; }
+    100% { transform: translateY(-150px); opacity: 0; }
+}
