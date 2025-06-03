@@ -2,20 +2,24 @@
   全局变量、基础样式
 =============================================*/
 :root {
-  --accent-color: rgb(0, 128, 128);
-  --color: #f8f8f8;
+  --accent-color: #76B7B2;
+  --accent-color2: #b7767b;
+  --accent-color-dim: #426b6b;
+  --accent-color2-dim: #633438;
+  --color-background: #f8f8f8;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* outline: solid red 1px; */
 }
 
 body {
   font-family: sans-serif;
   text-align: center;
-  background: var(--color);
+  background: var(--color-background);
   margin: 0;
   padding: 0;
 }
@@ -24,7 +28,7 @@ h1 {
   font-size: 2.5rem;
   padding: 20px 0;
   background: var(--accent-color);
-  color: var(--color);
+  color: black;
 }
 
 h2 {
@@ -35,22 +39,77 @@ h2 {
   布局部分
 =============================================*/
 .top-section {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 40px;
-  margin-top: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  gap: 100px;
+  margin-top: 40px;
+}
+
+#histogram {
+  justify-self: end;
 }
 
 .controls-left {
   text-align: left;
   font-size: 1rem;
+  justify-self: start;
 }
 
 .controls-left label {
   display: block;
   margin: 8px 0;
+}
+
+/*
+slider styles
+*/
+
+/* #slider-block {
+  display: flex;
+  flex-direction: column;
+}
+
+#slider-block label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 30%;
+}
+
+#slider-block em {
+  align-self: flex-end;
+} */
+
+input[type="range"] {
+  flex-grow: 1;
+  height: 6px;
+  /* background-color: rgba(83, 83, 83, 0.3); */
+  --gradient: 51.02%;
+  background: linear-gradient(to right, transparent 0 var(--gradient), lightgray var(--gradient) 100%), linear-gradient(to right, var(--accent-color-dim), var(--accent-color));
+  border-radius: 3px;
+  appearance: none;
+  outline: none;
+  margin: 0 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: rgb(160, 160, 160);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#sexSlider {
+  --gradient: 0%;
+}
+
+#sexVal {
+  font-style: normal;
 }
 
 .middle-section {
@@ -76,7 +135,7 @@ h2 {
 
 #submit:hover {
   background-color: var(--accent-color);
-  color: var(--color);
+  color: var(--color-background);
   cursor: pointer;
 }
 

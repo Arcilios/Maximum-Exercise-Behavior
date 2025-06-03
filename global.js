@@ -309,21 +309,35 @@ function updateAnimationWithData(point) {
   }
 }
 
-
+let activeLabel = null;
 
 function setupSliders(data) {
   const caption = document.getElementById("caption");
   document.querySelectorAll('input[type="range"]').forEach(slider => {
     const em = document.getElementById(slider.id.replace("Slider", "Val"));
-    slider.addEventListener('input', () => {
-      em.textContent = slider.value;
+    const label = document.querySelector(`label[for="${slider.id}"]`);
+    slider.addEventListener('input', () => {  
+      if (slider.id === "sexSlider") {
+        em.textContent = slider.value === "0" ? "Male" : "Female";
+      }
+      else {
+        em.textContent = slider.value;
+      }
+      if (activeLabel && activeLabel !== label) {
+        activeLabel.style.fontWeight = 'normal';
+      }
+      label.style.fontWeight = 'bold';
+      activeLabel = label;
     });
-    slider.addEventListener('change', () => {
+    slider.addEventListener('input', () => {
       const attr = slider.id.replace("Slider", "");
       const key = attr.charAt(0).toUpperCase() + attr.slice(1);
       me[key] = +slider.value;
       caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
       drawHistogram(data, key);
+
+      const gradient = (slider.value - slider.min) / (slider.max - slider.min) * 100 + '%';
+      slider.style.setProperty('--gradient', gradient);
     });
   });
 }

@@ -20,29 +20,37 @@
 
 
     <div class="controls-left">
-      <label>Age:
-        <input id="ageSlider" type="range" min="10" max="59" value="35" />
-        <em id="ageVal">35</em> years old
-      </label>
-      <br/>
-      <label>Weight:
-        <input id="weightSlider" type="range" min="50" max="99" value="75" />
-        <em id="weightVal">75</em> kg
-      </label>
-      <br/>
-      <label>Height:
-        <input id="heightSlider" type="range" min="150" max="199" value="175" />
-        <em id="heightVal">175</em> cm
-      </label>
-      <br/>
-      <label>Sex:
-        <input id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
-        <em id="sexVal">Male</em>
-      </label>
-      <br/>
-      <p id="caption">
-        The distribution of the top 100 longest lasting runners' height vs. your selected height.
-      </p>
+      <div id="slider-block">
+        <label for="ageSlider" id="ageLabel">Age:
+          <input id="ageSlider" type="range" min="10" max="59" value="35" />
+          <em id="ageVal">35</em> years old
+        </label>
+      </div>
+      <div id="slider-block">
+        <br/>
+        <label for="weightSlider" id="weightLabel">Weight:
+          <input id="weightSlider" type="range" min="50" max="99" value="75" />
+          <em id="weightVal">75</em> kg
+        </label>
+      </div>
+      <div id="slider-block">
+        <br/>
+        <label for="heightSlider" id="heightLabel">Height:
+          <input id="heightSlider" type="range" min="150" max="199" value="175" />
+          <em id="heightVal">175</em> cm
+        </label>
+      </div>
+      <div id="slider-block">
+        <br/>
+        <label for="sexSlider" id="sexLabel">Sex:
+          <input id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
+          <em id="sexVal">Male</em>
+        </label>
+      </div>
+        <br/>
+        <p id="caption">
+          The distribution of the top 100 longest lasting runners' height vs. your selected height.
+        </p>
     </div>
   </div>
 
