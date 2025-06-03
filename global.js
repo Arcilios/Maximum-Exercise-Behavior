@@ -160,11 +160,29 @@ document.getElementById("submit").addEventListener("click", () => {
 
   const physMatch = phys.find(p => p.ID === nearest.ID);
 
-  if (!matched || !physMatch) {
-    console.warn("No match found. Cannot generate charts.");
-    return;
-  }
+if (!matched || !physMatch) {
+  console.warn("No match found. Cannot generate charts.");
 
+  if (chart1Instance) {
+    chart1Instance.destroy();
+    chart1Instance = null;
+  }
+  if (chart2Instance) {
+    chart2Instance.destroy();
+    chart2Instance = null;
+  }
+  document.getElementById("chart1").getContext('2d').clearRect(0, 0, 600, 400);
+  document.getElementById("chart2").getContext('2d').clearRect(0, 0, 600, 400);
+  document.getElementById("organBox").style.display = "none";
+  document.getElementById("lungs").classList.add("paused");
+  document.getElementById("heart").classList.add("paused");
+  document.getElementById("animationArea").innerHTML = "";
+
+  const caption = document.getElementById("match");
+  caption.innerText = "⚠ No match found.";
+
+  return;
+}
   const labels = matched.time_series.map(d => d.time);
   const draw   = key => matched.time_series.map(d => d[key]);
 
@@ -201,7 +219,7 @@ chart2Instance = new Chart(document.getElementById("chart2"), {
         data: draw("VO2"),
         borderWidth: 2,
         pointRadius: 2,
-        borderColor: "blue",       // VO2 用蓝色
+        borderColor: "blue",       
         backgroundColor: "blue"
       },
       {
@@ -209,7 +227,7 @@ chart2Instance = new Chart(document.getElementById("chart2"), {
         data: draw("VCO2"),
         borderWidth: 2,
         pointRadius: 2,
-        borderColor: "red",        // VCO2 用红色（可自行换色）
+        borderColor: "red",        
         backgroundColor: "red"
       }
     ]
@@ -298,7 +316,6 @@ function updateAnimationWithData(point) {
     document.getElementById("animationArea").appendChild(bubbleVo2);
   }
 
-  // VCO2 气泡（不再移除）
   if (!window.lastVco2BubbleTime) window.lastVco2BubbleTime = 0;
   if (Date.now() - window.lastVco2BubbleTime > vco2Freq) {
     window.lastVco2BubbleTime = Date.now();

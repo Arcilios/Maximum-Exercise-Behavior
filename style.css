@@ -1,6 +1,4 @@
-/*=============================================
-  全局变量、基础样式
-=============================================*/
+
 :root {
   --accent-color: #76B7B2;
   --accent-color2: #b7767b;
@@ -35,9 +33,6 @@ h2 {
   margin: 20px 0 10px;
 }
 
-/*=============================================
-  布局部分
-=============================================*/
 .top-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -171,10 +166,6 @@ canvas {
   width: 80px;
   margin: 10px 0;
 }
-
-/*=============================================
-  呼吸与心跳动画
-=============================================*/
 .breath {
   animation: breathing 4s ease-in-out infinite;
 }
@@ -198,17 +189,14 @@ canvas {
   28%, 70% { transform: scale(1); }
 }
 
-/*=============================================
-  气泡动画容器
-=============================================*/
+
 .animation-container {
   position: relative;
-  width: 100px;   /* 可根据需要调整宽度 */
-  height: 120px;  /* 可根据需要调整高度 */
+  width: 100px;  
+  height: 120px;  
   overflow: hidden;
 }
 
-/* 公共气泡样式 */
 .bubble {
   position: absolute;
   width: 10px;
@@ -217,7 +205,6 @@ canvas {
   opacity: 0.7;
 }
 
-/* VO₂ 气泡：从底部往上，透明度慢慢消失 */
 .bubble.vo2 {
   bottom: 0;
   background-color: rgba(0, 0, 255, 0.6);
@@ -229,7 +216,6 @@ canvas {
   100% { transform: translateY(-120px); opacity: 0; }
 }
 
-/* VCO₂ 气泡：从顶部往下，透明度慢慢消失 */
 .bubble.vco2 {
   top: 0;
   background-color: rgba(255, 0, 0, 0.6);
@@ -241,9 +227,7 @@ canvas {
   100% { transform: translateY(120px); opacity: 0; }
 }
 
-/*=============================================
-  工具提示（可选）
-=============================================*/
+
 .tooltip {
   position: absolute;
   background: rgba(0, 0, 0, 0.7);
