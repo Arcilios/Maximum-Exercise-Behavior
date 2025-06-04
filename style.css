@@ -1,4 +1,3 @@
-
 :root {
   --accent-color: #76B7B2;
   --accent-color2: #b7767b;
@@ -34,21 +33,32 @@ h2 {
 }
 
 .top-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   gap: 100px;
-  margin-top: 40px;
+  margin: 30px auto;
+  /* max-width: 1200px; */
+  flex-wrap: wrap;
 }
 
-#histogram {
-  justify-self: end;
+#caption {
+  margin-bottom: 10px;
+}
+
+.graph {
+  justify-content: start;
+  justify-items: start;
 }
 
 .controls-left {
   text-align: left;
   font-size: 1rem;
-  justify-self: start;
+  justify-self: end;
+  justify-items: start;
+  padding: 10px;
+  
+  border: solid gray 1px;
 }
 
 .controls-left label {
@@ -60,7 +70,7 @@ h2 {
 slider styles
 */
 
-/* #slider-block {
+#slider-block {
   display: flex;
   flex-direction: column;
 }
@@ -69,24 +79,26 @@ slider styles
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 10px;
   width: 30%;
+  padding-bottom: 10px;
 }
 
 #slider-block em {
   align-self: flex-end;
-} */
+  font-style: normal;
+}
 
 input[type="range"] {
   flex-grow: 1;
   height: 6px;
-  /* background-color: rgba(83, 83, 83, 0.3); */
+  width: 180px;
   --gradient: 51.02%;
   background: linear-gradient(to right, transparent 0 var(--gradient), lightgray var(--gradient) 100%), linear-gradient(to right, var(--accent-color-dim), var(--accent-color));
   border-radius: 3px;
   appearance: none;
   outline: none;
-  margin: 0 10px;
+  margin: 0 1px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -101,10 +113,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 #sexSlider {
   --gradient: 0%;
-}
-
-#sexVal {
-  font-style: normal;
 }
 
 .middle-section {
