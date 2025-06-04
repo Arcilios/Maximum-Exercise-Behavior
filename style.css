@@ -61,22 +61,21 @@ h3 {
 .graph {
   justify-content: start;
   justify-items: start;
+  min-width: 700px;
 }
 
 .controls-left {
   text-align: left;
   font-size: 1rem;
   justify-self: end;
-  justify-items: start;
+  justify-items: center;
   padding: 10px;
-  
   border: solid gray 1px;
 }
 
-.controls-left label {
+/* .controls-left label {
   display: block;
-  margin: 8px 0;
-}
+} */
 
 /*
 slider styles
@@ -94,6 +93,8 @@ slider styles
   gap: 10px;
   width: 30%;
   padding-bottom: 10px;
+  font-weight: normal;
+  margin: 8px 0;
 }
 
 #slider-block em {
@@ -104,7 +105,7 @@ slider styles
 input[type="range"] {
   flex-grow: 1;
   height: 6px;
-  width: 180px;
+  width: 200px;
   --gradient: 51.02%;
   background: linear-gradient(to right, transparent 0 var(--gradient), lightgray var(--gradient) 100%), linear-gradient(to right, var(--accent-color-dim), var(--accent-color));
   border-radius: 3px;
@@ -127,12 +128,53 @@ input[type="range"]::-webkit-slider-thumb {
   --gradient: 0%;
 }
 
+#temperatureSlider {
+  --gradient: 41.18%;
+}
+
+#humiditySlider {
+  --gradient: 35.56%
+}
+
+form {
+  margin-top: 30px;
+  display: inline-flex;
+  border: 2px solid var(--accent-color);
+  overflow: hidden;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 30px;
+  user-select: none;
+  background: var(--color-background);
+  color: var(--accent-color);
+  border-right: 2px solid var(--accent-color);
+  transition: background-color 0.3s, color 0.3s;
+  margin: 0px 0px;
+  max-width: 95px;
+}
+
+.btn:last-child {
+  border-right: none;
+}
+
+input[type="radio"]:checked + label {
+  background-color: var(--accent-color);
+  color: var(--color-background);
+}
+
+
 .middle-section {
   margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 40px;
+  margin-bottom: 10px;
 }
 
 .middle-section label {

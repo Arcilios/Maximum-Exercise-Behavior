@@ -154,8 +154,8 @@ function drawHistogram(data, attribute) {
 
 
 document.getElementById("submit").addEventListener("click", () => {
-  me.Temperature = +document.getElementById("temperatureInput").value;
-  me.Humidity    = +document.getElementById("humidityInput").value;
+  me.Temperature = +document.getElementById("temperatureSlider").value;
+  me.Humidity    = +document.getElementById("humiditySlider").value;
 
   const nearest = findNearest(dataset, me);
   
@@ -278,6 +278,8 @@ function findNearest(data, target) {
       (row.features[0] - target.Age) ** 2 +
       (row.features[1] - target.Weight) ** 2 +
       (row.features[2] - target.Height) ** 2 +
+      (row.features[3] - target.Humidity) ** 2 + //check
+      (row.features[4] - target.Temperature) ** 2 +
       (row.features[5] - target.Sex) ** 2
     );
     if (dist < minDist) {
@@ -358,13 +360,13 @@ let activeLabel = null;
 
 function setupSliders(data) {
   const caption = document.getElementById("caption");
-  document.querySelectorAll('input[type="range"]').forEach(slider => {
+  document.querySelectorAll('.slider-histogram').forEach(slider => {
     const em = document.getElementById(slider.id.replace("Slider", "Val"));
     const label = document.querySelector(`label[for="${slider.id}"]`);
     slider.addEventListener('input', () => {  
-      if (slider.id === "sexSlider") {
-        em.textContent = slider.value === "0" ? "Male" : "Female";
-      }
+      // if (slider.id === "sexSlider") {
+      //   em.textContent = slider.value === "0" ? "Male" : "Female";
+      // }
       if (slider.id === "ageSlider") {
         em.textContent = slider.value + " years";
       }
@@ -387,8 +389,49 @@ function setupSliders(data) {
       caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
       drawHistogram(data, key);
 
+    });
+  });
+  
+  document.querySelectorAll('.form-histogram').forEach(form => {
+    form.addEventListener('change', () => {
+      const checkedRadio = form.querySelector('input[name="choice"]:checked');
+      const label = document.querySelector(`label[for="${checkedRadio.id}"]`);
+      if (activeLabel && activeLabel !== label) {
+        activeLabel.style.fontWeight = 'normal';
+      }
+      label.style.fontWeight = 'bold';
+      activeLabel = label;
+      const attr = "sex";
+      const key = attr.charAt(0).toUpperCase() + attr.slice(1);
+      me[key] = +checkedRadio.value;
+      caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
+      drawHistogram(data, key);
+    });
+  });
+
+  document.querySelectorAll('.slider-line').forEach(slider => {
+    const em = document.getElementById(slider.id.replace("Slider", "Val"));
+    const label = document.querySelector(`label[for="${slider.id}"]`);
+    slider.addEventListener('input', () => {
+      if (slider.id === "temperatureSlider") {
+          em.textContent = slider.value + " °C";
+      }
+      if (slider.id === "humiditySlider") {
+        em.textContent = slider.value + " %";
+      }
+      if (activeLabel && activeLabel !== label) {
+        activeLabel.style.fontWeight = 'normal';
+      }
+      label.style.fontWeight = 'bold';
+      activeLabel = label;
+    });
+  });
+
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    slider.addEventListener('input', () => {
       const gradient = (slider.value - slider.min) / (slider.max - slider.min) * 100 + '%';
       slider.style.setProperty('--gradient', gradient);
     });
   });
 }
+
