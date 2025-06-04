@@ -147,8 +147,9 @@ document.getElementById("submit").addEventListener("click", () => {
   me.Temperature = +document.getElementById("temperatureInput").value;
   me.Humidity    = +document.getElementById("humidityInput").value;
 
-  const nearest = findNearest(data2, me);
-
+  const nearest = findNearest(dataset, me);
+  
+/*
   matched = dataset.find(p =>
     Math.abs(p.features[0] - nearest.Age) < 2 &&
     Math.abs(p.features[1] - nearest.Weight) < 2 &&
@@ -157,10 +158,11 @@ document.getElementById("submit").addEventListener("click", () => {
     Math.abs(p.features[4] - me.Temperature) < 1 &&
     p.features[5] == nearest.Sex
   );
+  */
+  const matched = nearest;
 
-  const physMatch = phys.find(p => p.ID === nearest.ID);
 
-if (!matched || !physMatch) {
+if (!matched) {
   console.warn("No match found. Cannot generate charts.");
 
   if (chart1Instance) {
@@ -248,18 +250,22 @@ chart2Instance = new Chart(document.getElementById("chart2"), {
 
 function findNearest(data, target) {
   let minDist = Infinity, best = null;
+
   for (const row of data) {
     const dist = Math.sqrt(
-      ["Age", "Weight", "Height", "Sex"].reduce((sum, k) => sum + (row[k] - target[k]) ** 2, 0)
+      (row.features[0] - target.Age) ** 2 +
+      (row.features[1] - target.Weight) ** 2 +
+      (row.features[2] - target.Height) ** 2 +
+      (row.features[5] - target.Sex) ** 2
     );
     if (dist < minDist) {
       minDist = dist;
       best = row;
     }
   }
+
   return best;
 }
-
 function ruochen() {
   document.getElementById("organBox").style.display = "block";
   document.getElementById("lungs").classList.remove("paused");
