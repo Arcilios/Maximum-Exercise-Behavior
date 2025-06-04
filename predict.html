@@ -15,43 +15,43 @@
   <h2>Input your traits</h2>
 
   <div class="top-section">
-
-    <svg id="histogram" width="600" height="400"></svg>
-
-
     <div class="controls-left">
       <div id="slider-block">
-        <label for="ageSlider" id="ageLabel">Age:
+        <label for="ageSlider" id="ageLabel">Age
           <input id="ageSlider" type="range" min="10" max="59" value="35" />
-          <em id="ageVal">35</em> years old
         </label>
+        <em id="ageVal">35 years</em>
       </div>
       <div id="slider-block">
         <br/>
-        <label for="weightSlider" id="weightLabel">Weight:
+        <label for="weightSlider" id="weightLabel">Weight
           <input id="weightSlider" type="range" min="50" max="99" value="75" />
-          <em id="weightVal">75</em> kg
         </label>
+        <em id="weightVal">75 kg</em>
       </div>
       <div id="slider-block">
         <br/>
-        <label for="heightSlider" id="heightLabel">Height:
+        <label for="heightSlider" id="heightLabel">Height
           <input id="heightSlider" type="range" min="150" max="199" value="175" />
-          <em id="heightVal">175</em> cm
         </label>
+        <em id="heightVal">175 cm</em>
       </div>
       <div id="slider-block">
         <br/>
-        <label for="sexSlider" id="sexLabel">Sex:
+        <label for="sexSlider" id="sexLabel">Sex
           <input id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
-          <em id="sexVal">Male</em>
         </label>
+        <em id="sexVal">Male</em>
       </div>
         <br/>
-        <p id="caption">
+    </div>
+    <div class="graph">
+      <p id="caption">
           The distribution of the top 100 longest lasting runners' height vs. your selected height.
         </p>
+      <svg id="histogram" width="650" height="400"></svg>
     </div>
+
   </div>
 
 

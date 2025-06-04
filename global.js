@@ -63,12 +63,12 @@ function drawHistogram(data, attribute) {
   const binWidth = width / bins.length;
 
   bins.forEach((bin, i) => {
-    const x0 = i * binWidth + (binWidth - squareSize) / 2;
+    const x0 = i * binWidth + (binWidth - squareSize) / 2 - 30;
     bin.forEach((d, j) => {
       const col = Math.floor(j / maxPerCol);
       const row = j % maxPerCol;
       const xx = x0 + col * (squareSize + gap);
-      const yy = height - 180 - row * (squareSize + gap);
+      const yy = height - 100 - row * (squareSize + gap);
 
       g.append("rect")
         .attr("x", xx)
@@ -94,7 +94,7 @@ function drawHistogram(data, attribute) {
     });
 
     g.append("text")
-      .attr("transform", `translate(${x0 + squareSize/2}, ${height - 180 + 18}) rotate(30)`)
+      .attr("transform", `translate(${x0 + squareSize/2 - 30}, ${height - 180 + 18 + 80}) rotate(30)`)
       .style("text-anchor", "start")
       .style("font-size", "12px")
       .text(`${bins[i].x0.toFixed(1)} - ${bins[i].x1.toFixed(1)}`);
@@ -102,14 +102,14 @@ function drawHistogram(data, attribute) {
 
   const special = me[attribute];
   if (special != null && !isNaN(special)) {
-    const idx = bins.findIndex(bin => special >= bin.x0 && special < bin.x1);
+    const idx = bins.findIndex(bin => special >= bin.x0 && special <= bin.x1);
     if (idx !== -1) {
       const binObj = bins[idx];
-      const x0 = idx * binWidth + (binWidth - squareSize) / 2;
+      const x0 = idx * binWidth + (binWidth - squareSize) / 2 - 30;
       const col = Math.floor(binObj.length / maxPerCol);
       const row = binObj.length % maxPerCol;
       const xx = x0 + col * (squareSize + gap);
-      const yy = height - 180 - row * (squareSize + gap);
+      const yy = height - 100 - row * (squareSize + gap);
 
       g.append("rect")
         .attr("x", xx)
@@ -133,13 +133,23 @@ function drawHistogram(data, attribute) {
         });
     }
   }
-
+ 
+  let label = "";
+  if (attribute === "Height") {
+    label = " (cm)"
+  }
+  if (attribute === "Weight") {
+    label = " (kg)"
+  }
+  if (attribute === "Age") {
+    label = " (years)"
+  }
   g.append("text")
     .attr("class", "x-axis-label")
-    .attr("x", width / 2)
-    .attr("y", height - 100)
+    .attr("x", width / 2 - 30 - 20)
+    .attr("y", height - 100 + 80)
     .style("font-size", "16px")
-    .text(attribute.charAt(0).toUpperCase() + attribute.slice(1));
+    .text(attribute.charAt(0).toUpperCase() + attribute.slice(1) + label);
 }
 
 
@@ -355,8 +365,14 @@ function setupSliders(data) {
       if (slider.id === "sexSlider") {
         em.textContent = slider.value === "0" ? "Male" : "Female";
       }
-      else {
-        em.textContent = slider.value;
+      if (slider.id === "ageSlider") {
+        em.textContent = slider.value + " years";
+      }
+      if (slider.id === "weightSlider") {
+        em.textContent = slider.value + " kg";
+      }
+      if (slider.id === "heightSlider") {
+        em.textContent = slider.value + " cm";
       }
       if (activeLabel && activeLabel !== label) {
         activeLabel.style.fontWeight = 'normal';
