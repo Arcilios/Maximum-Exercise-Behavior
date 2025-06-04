@@ -206,6 +206,12 @@ if (!matched) {
         if (elements.length > 0) {
           const idx = elements[0].index;
           updateAnimationWithData(matched.time_series[idx]);
+          const caption = document.getElementById("match");
+          caption.innerText = 'HR: ' + matched.time_series[idx].HR +
+          ', RR: ' + matched.time_series[idx].RR +
+          ', VE: ' + matched.time_series[idx].VE +
+          ', VO2: ' + matched.time_series[idx].VO2 +
+          ', VCO2: ' + matched.time_series[idx].VCO2;
         }
       }
     }
@@ -239,6 +245,12 @@ chart2Instance = new Chart(document.getElementById("chart2"), {
       if (elements.length > 0) {
         const idx = elements[0].index;
         updateAnimationWithData(matched.time_series[idx]);
+        const caption = document.getElementById("match");
+        caption.innerText = 'HR: ' + matched.time_series[idx].HR +
+          ', RR: ' + matched.time_series[idx].RR +
+          ', VE: ' + matched.time_series[idx].VE +
+          ', VO2: ' + matched.time_series[idx].VO2 +
+          ', VCO2: ' + matched.time_series[idx].VCO2;
       }
     }
   }

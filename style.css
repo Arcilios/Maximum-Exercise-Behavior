@@ -208,7 +208,7 @@ canvas {
 .bubble.vo2 {
   bottom: 0;
   background-color: rgba(0, 0, 255, 0.6);
-  animation: riseUp 3s linear forwards;
+  animation: riseUp 3s linear infinite;
 }
 
 @keyframes riseUp {
@@ -219,7 +219,7 @@ canvas {
 .bubble.vco2 {
   top: 0;
   background-color: rgba(255, 0, 0, 0.6);
-  animation: fallDown 3s linear forwards;
+  animation: fallDown 3s linear infinite;
 }
 
 @keyframes fallDown {
