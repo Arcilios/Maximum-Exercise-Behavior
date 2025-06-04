@@ -1,0 +1,252 @@
+:root {
+  --accent-color: rgb(0, 128, 128);
+  --light-gray: #f8f8f8;
+  --white: #ffffff;
+  --dark-gray: #333333;
+  --gray: gray;
+}
+
+html {
+  overflow: auto;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--light-gray);
+  text-align: center;
+  max-width: 160ch;
+  margin-inline: auto;
+  margin-top: 0;   
+}
+
+#title {
+  font-size: 300%;
+  font-family: Verdana;
+  color: var(--light-gray);
+  background-color: var(--dark-gray);
+  margin-top: 0px;
+  border-top: solid var(--dark-gray) 40px;
+  border-bottom: solid var(--dark-gray) 40px;
+}
+
+svg {
+  background: white;
+}
+
+.bar-label {
+  text-anchor: middle;
+  font-size: 12px;
+}
+
+.x-axis-label {
+  text-anchor: middle;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#trait-select{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  gap: 1ch;
+  padding: 1ch;
+  
+  /* h2{
+      grid-row-start: 0;
+      grid-row-end: 2;
+  } */
+  #toggles{
+      display: grid;
+      /* grid-row-start: 2;
+      grid-column-start: 0; */
+      margin-left: 10px;
+      label{
+          display: flex;
+          align-items: center;
+          
+          input{
+              flex: 1;
+              margin-left: 1ch;
+              margin-right: 1ch;
+          }
+          em {
+            margin-right: 0.5ch;
+          }
+      }
+  }
+  
+  #histogram{
+    padding: 0;
+    margin: 0;
+  }
+
+  #caption{
+    width: 100%;
+    margin-top: -100px;
+  }
+
+}
+
+#act-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tuple-display {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+  font-family: sans-serif;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.stat-block .label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.stat-block .value {
+  font-size: 1.2em;
+  color: #333;
+}
+
+#submit {
+    font-size: 125%;
+    padding: 0.75em;
+    border-radius: 8px;
+    border: solid var(--accent-color);
+    transition-duration: 0.4s;
+}   
+
+#submit:hover {
+  background-color: var(--accent-color);
+  color: var(--color);
+  cursor: pointer; 
+}
+
+img {
+  width: 150px;
+  height: auto;
+  margin: 20px;
+}
+
+
+.breath {
+  animation: breathing 4s ease-in-out infinite;
+}
+
+
+.heartbeat {
+  animation: heartbeat 1s infinite;
+}
+
+
+@keyframes breathing {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.3); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.3); }
+  70% { transform: scale(1); }
+}
+
+
+.animation-container {
+  position: relative;
+  height: 300px;
+}
+
+
+.vo2-dot {
+  position: absolute;
+  left: 40%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: blue;
+  animation: vo2flow 2s linear infinite;
+}
+
+
+@keyframes vo2flow {
+  0% { top: 0; opacity: 1; }
+  100% { top: 120px; opacity: 0; }
+}
+
+
+.vco2-dot {
+  position: absolute;
+  left: 60%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: red;
+  animation: co2flow 2s linear infinite;
+}
+
+
+@keyframes co2flow {
+  0% { top: 120px; opacity: 0; }
+  100% { top: 0; opacity: 1; }
+}
+
+
+.bubble {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  background: lightblue;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: bubbleUp 3s ease-out infinite;
+}
+
+
+@keyframes bubbleUp {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(-150px); opacity: 0; }
+}
+
+.img-holder{
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  height: 30%; 
+  gap: 150px;
+}
+
+/* * {
+  outline: solid red 1px;
+} */

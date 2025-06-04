@@ -21,15 +21,27 @@ body {
   padding: 0;
 }
 
+#title {
+  background: var(--accent-color);
+  padding-bottom: 10px;
+}
+
 h1 {
   font-size: 2.5rem;
   padding: 20px 0;
-  background: var(--accent-color);
+  
   color: black;
 }
 
 h2 {
   margin: 20px 0 10px;
+}
+
+h3 {
+  margin: 0 10px;
+  font-weight: normal;
+  opacity: 70%;
+  font-size: 100%;
 }
 
 .top-section {
