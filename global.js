@@ -1,363 +1,378 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-// Act 1
-  function drawD3HistogramObjectData(data, attribute, binCount = 5, squareSize = 10, gap = 4, maxSquaresPerColumn = 20, me = null) {
-    const svg = d3.select("#histogram");
-    svg.selectAll("*").remove();
-    const tooltip = d3.select("#tooltip");
 
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
-    // const margin = { top: 40, right: 30, bottom: 80, left: 50 };
-    const plotWidth = width;
-    const plotHeight = height;
+let dataset, data2, phys, data;
+let chart1Instance, chart2Instance;
+let matched;
 
-    const g = svg.append("g");//.attr("transform", `translate(${margin.left},${margin.top})`);
+let me = {
+  Age: 35,
+  Weight: 75,
+  Height: 175,
+  Sex: 0,
+  Temperature: 22,
+  Humidity: 40
+};
 
-    let filteredData = data.filter(d => typeof d[attribute] === "number");
+async function loadCSV(file) {
+  const cols = ['Age', 'HR', 'Height', 'ID', 'Sex', 'Weight', 'time', 'VO2', 'RR', 'VCO2', 'VE'];
+  return await d3.csv(file, row => {
+    const parsed = { ...row };
+    cols.forEach(k => {
+      if (k in row) parsed[k] = +row[k];
+    });
+    return parsed;
+  });
+}
 
+async function loadAll() {
+  dataset = await fetch("data.json").then(r => r.json());
+  data2   = await loadCSV("demo.csv");
+  phys    = await loadCSV("demo2.csv");
+  data    = await loadCSV("output.csv");
 
-const xScale = d3.scaleLinear()
-  .domain(d3.extent(filteredData, d => d[attribute]))
-  .nice(binCount)
-  .range([0, plotWidth]);
+  drawHistogram(data, "Height");
+  setupSliders(data);
+}
 
-let bins = d3.bin()
-  .value(d => d[attribute])
-  .domain(xScale.domain())
-  .thresholds(xScale.ticks(binCount))(filteredData);
+loadAll();
 
-    bins = bins.filter(bin => bin.length > 0);
-    const binWidth = plotWidth / bins.length;
+function drawHistogram(data, attribute) {
+  const svg = d3.select("#histogram");
+  svg.selectAll("*").remove();
 
-    // Draw squares and labels
-    bins.forEach((bin, i) => {
-      const x = i * binWidth + (binWidth - squareSize) / 2;
-      bin.forEach((d, j) => {
-        const col = Math.floor(j / maxSquaresPerColumn);
-        const row = j % maxSquaresPerColumn;
+  const filtered = data.filter(d => typeof d[attribute] === "number");
+  const width = +svg.attr("width");
+  const height = +svg.attr("height");
 
-        const squareX = x + col * (squareSize + gap);
-        const squareY = plotHeight - 200 - row * (squareSize + gap);
-        
-        g.append("rect")
-          .attr("x", squareX)
-          .attr("y", squareY - squareSize)
-          .attr("width", squareSize)
-          .attr("height", squareSize)
-          .attr("fill", "#4a90e2")
-          .attr("stroke", "#2e6bbf")
-          .on("mouseover", (event) => {
-            tooltip
+  // binCount 改为 5
+  const xScale = d3.scaleLinear()
+    .domain(d3.extent(filtered, d => d[attribute]))
+    .nice(5)
+    .range([0, width]);
+
+  let bins = d3.bin()
+    .value(d => d[attribute])
+    .domain(xScale.domain())
+    .thresholds(xScale.ticks(5))(filtered);
+  bins = bins.filter(bin => bin.length > 0);
+
+  const g = svg.append("g");
+  const squareSize = 10;
+  const gap = 4;
+  const maxPerCol = 20;
+  const binWidth = width / bins.length;
+
+  bins.forEach((bin, i) => {
+    const x0 = i * binWidth + (binWidth - squareSize) / 2;
+    bin.forEach((d, j) => {
+      const col = Math.floor(j / maxPerCol);
+      const row = j % maxPerCol;
+      const xx = x0 + col * (squareSize + gap);
+      const yy = height - 180 - row * (squareSize + gap);
+
+      g.append("rect")
+        .attr("x", xx)
+        .attr("y", yy - squareSize)
+        .attr("width", squareSize)
+        .attr("height", squareSize)
+        .attr("fill", "#4a90e2")
+        .attr("stroke", "#2e6bbf")
+        .on("mouseover", event => {
+          d3.select("#tooltip")
             .style("opacity", 1)
-            .html(`
-              <div><strong>ID:</strong> ${d.ID ?? "Unknown"}</div>
-              <div><strong>${attribute}:</strong> ${d[attribute]}</div>
-            `);
-          })
-          .on("mousemove", (event) => {
-            tooltip
-              .style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 20) + "px");
-          })
-          .on("mouseout", () => {
-            tooltip.style("opacity", 0);
-          });
-      });
-
-      // Bin label (below bar)
-      g.append("text")
-        .attr("x", x + squareSize / 2)
-        .attr("y", plotHeight - 200 + 18)
-        .attr("class", "bar-label")
-        .text(`${bin.x0.toFixed(1)} - ${bin.x1.toFixed(1)}`);
+            .html(`<div><strong>ID:</strong> ${d.ID ?? "Unknown"}</div>
+                   <div><strong>${attribute}:</strong> ${d[attribute]}</div>`);
+        })
+        .on("mousemove", event => {
+          d3.select("#tooltip")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 20) + "px");
+        })
+        .on("mouseout", () => {
+          d3.select("#tooltip").style("opacity", 0);
+        });
     });
 
-    // X-Axis Attribute Label (only)
-
-    let specialValue = me[attribute];
-    console.log(specialValue)
     g.append("text")
-      .attr("class", "x-axis-label")
-      .attr("x", plotWidth / 2)
-      .attr("y", plotHeight + 50 - 200)
-      .text(attribute.charAt(0).toUpperCase() + attribute.slice(1)); // Capitalize
+      .attr("transform", `translate(${x0 + squareSize/2}, ${height - 180 + 18}) rotate(30)`)
+      .style("text-anchor", "start")
+      .style("font-size", "12px")
+      .text(`${bins[i].x0.toFixed(1)} - ${bins[i].x1.toFixed(1)}`);
+  });
 
-      if (specialValue !== null && !isNaN(specialValue)) {
-        const binIndex = bins.findIndex(bin => specialValue >= bin.x0 && specialValue < bin.x1);
-      
-        if (binIndex !== -1) {
-          const bin = bins[binIndex];
-          const x = binIndex * binWidth + (binWidth - squareSize) / 2;
-      
-          const col = Math.floor(bin.length / maxSquaresPerColumn);
-          const row = bin.length % maxSquaresPerColumn;
-      
-          const squareX = x + col * (squareSize + gap);
-          const squareY = plotHeight - 200 - row * (squareSize + gap);
-      
-          g.append("rect")
-            .attr("x", squareX)
-            .attr("y", squareY - squareSize)
-            .attr("width", squareSize)
-            .attr("height", squareSize)
-            .attr("fill", "yellow")
-            .attr("stroke", "#b59f00")
-            .on("mouseover", (event) => {
-              tooltip
-                .style("opacity", 1)
-                .html(`<strong>${attribute} (you):</strong> ${specialValue}`);
-            })
-            .on("mousemove", (event) => {
-              tooltip
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 20) + "px");
-            })
-            .on("mouseout", () => {
-              tooltip.style("opacity", 0);
-            });
+  const special = me[attribute];
+  if (special != null && !isNaN(special)) {
+    const idx = bins.findIndex(bin => special >= bin.x0 && special < bin.x1);
+    if (idx !== -1) {
+      const binObj = bins[idx];
+      const x0 = idx * binWidth + (binWidth - squareSize) / 2;
+      const col = Math.floor(binObj.length / maxPerCol);
+      const row = binObj.length % maxPerCol;
+      const xx = x0 + col * (squareSize + gap);
+      const yy = height - 180 - row * (squareSize + gap);
+
+      g.append("rect")
+        .attr("x", xx)
+        .attr("y", yy - squareSize)
+        .attr("width", squareSize)
+        .attr("height", squareSize)
+        .attr("fill", "yellow")
+        .attr("stroke", "#b59f00")
+        .on("mouseover", event => {
+          d3.select("#tooltip")
+            .style("opacity", 1)
+            .html(`<strong>${attribute} (you):</strong> ${special}`);
+        })
+        .on("mousemove", event => {
+          d3.select("#tooltip")
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 20) + "px");
+        })
+        .on("mouseout", () => {
+          d3.select("#tooltip").style("opacity", 0);
+        });
+    }
+  }
+
+  g.append("text")
+    .attr("class", "x-axis-label")
+    .attr("x", width / 2)
+    .attr("y", height - 100)
+    .style("font-size", "16px")
+    .text(attribute.charAt(0).toUpperCase() + attribute.slice(1));
+}
+
+
+document.getElementById("submit").addEventListener("click", () => {
+  me.Temperature = +document.getElementById("temperatureInput").value;
+  me.Humidity    = +document.getElementById("humidityInput").value;
+
+  const nearest = findNearest(dataset, me);
+  
+/*
+  matched = dataset.find(p =>
+    Math.abs(p.features[0] - nearest.Age) < 2 &&
+    Math.abs(p.features[1] - nearest.Weight) < 2 &&
+    Math.abs(p.features[2] - nearest.Height) < 2 &&
+    Math.abs(p.features[3] - me.Humidity) < 2 &&
+    Math.abs(p.features[4] - me.Temperature) < 1 &&
+    p.features[5] == nearest.Sex
+  );
+  */
+  const matched = nearest;
+
+
+if (!matched) {
+  console.warn("No match found. Cannot generate charts.");
+
+  if (chart1Instance) {
+    chart1Instance.destroy();
+    chart1Instance = null;
+  }
+  if (chart2Instance) {
+    chart2Instance.destroy();
+    chart2Instance = null;
+  }
+  document.getElementById("chart1").getContext('2d').clearRect(0, 0, 600, 400);
+  document.getElementById("chart2").getContext('2d').clearRect(0, 0, 600, 400);
+  document.getElementById("organBox").style.display = "none";
+  document.getElementById("lungs").classList.add("paused");
+  document.getElementById("heart").classList.add("paused");
+  document.getElementById("animationArea").innerHTML = "";
+
+  const caption = document.getElementById("match");
+  caption.innerText = "⚠ No match found.";
+
+  return;
+}
+  const labels = matched.time_series.map(d => d.time);
+  const draw   = key => matched.time_series.map(d => d[key]);
+
+  if (chart1Instance) chart1Instance.destroy();
+  if (chart2Instance) chart2Instance.destroy();
+
+  chart1Instance = new Chart(document.getElementById("chart1"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        { label: "HR (bpm)", data: draw("HR"), borderWidth: 2, pointRadius: 2 },
+        { label: "RR (breaths/min)", data: draw("RR"), borderWidth: 2, pointRadius: 2 },
+        { label: "VE (L/min)", data: draw("VE"), borderWidth: 2, pointRadius: 2 }
+      ]
+    },
+    options: {
+      onHover: (event, elements) => {
+        if (elements.length > 0) {
+          const idx = elements[0].index;
+          updateAnimationWithData(matched.time_series[idx]);
+          const caption = document.getElementById("match");
+          caption.innerText = 'HR: ' + matched.time_series[idx].HR +
+          ', RR: ' + matched.time_series[idx].RR +
+          ', VE: ' + matched.time_series[idx].VE +
+          ', VO2: ' + matched.time_series[idx].VO2 +
+          ', VCO2: ' + matched.time_series[idx].VCO2;
         }
       }
-
-      
-  }
-
-  async function loadCSV(filePath) {
-    const columnsToConvert = ['Age', 'HR', 'Height', 'ID', 'Sex', 'Weight', 'time', 'VO2', 'RR', 'VCO2', 'VE'];
-  
-    const data = await d3.csv(filePath, row => {
-      const converted = { ...row };
-  
-      columnsToConvert.forEach(col => {
-        if (col in row && row[col] !== '') {
-          const num = Number(row[col]);
-          converted[col] = isNaN(num) ? null : num;
-        }
-      });
-  
-      return converted;
-    });
-  
-    return data;
-  }
-
-  function createLabels(){
-    /*
-    document.querySelectorAll('label').forEach(label => {
-        const rangeInput = label.querySelector('input[type="range"]');
-        const em = label.querySelector('em');
-    
-        // Set initial value
-        em.textContent = rangeInput.value;
-    
-        // Update on input
-        rangeInput.addEventListener('input', () => {
-          em.textContent = rangeInput.value;
-        });
-        rangeInput.addEventListener
-      });
-      */
-    let caption = document.querySelector("#caption");
-    document.querySelectorAll('input[type="range"]').forEach(slider => {
-        const em = slider.nextElementSibling; // the <em> element
-      
-        // Update <em> live
-        slider.addEventListener('input', () => {
-          em.textContent = slider.value;
-        });
-      
-        // On release (user stops dragging)
-        slider.addEventListener('change', () => {
-          const attribute = slider.dataset.attribute;
-          const value = +slider.value;
-          me[attribute] = value;
-          const lowercase = slider.dataset.attribute.toLowerCase();
-          caption.innerText = `The distribution of the top 100 longest lasting runners' ${lowercase} vs. your selected ${lowercase}.`
-      
-          // Redraw histogram for the changed attribute
-          drawD3HistogramObjectData(data, attribute, 5, 10, 4, 20, me);
-        });
-      });
-  }
-
-
-let me = {ID : 'You', Age : 35, Weight : 75 ,Height : 175 ,Sex : 0.5};
-let data = await loadCSV('output.csv');
-console.log(data);
-createLabels();
-//drawD3HistogramObjectData(data, "time"); 
-console.log(me);
-drawD3HistogramObjectData(data, "Height", 5, 10, 4, 20, me);
-console.log("hi");
-// Act 2
-function findNearestNeighbor(data, newRow, skipFirst = true) {
-  // Get column names, skipping index/ID if specified
-  const columns = skipFirst ? data.columns.slice(1) : data.columns;
-
-  // Compute mean and std for each column
-  const stats = {};
-  columns.forEach(col => {
-    const values = data.map(d => d[col]);
-    const allNumeric = values.every(v => typeof v === 'number' && !isNaN(v));
-    if (allNumeric) {
-      stats[col] = {
-        mean: d3.mean(values),
-        std: d3.deviation(values)
-      };
     }
   });
 
-  // Helper to standardize a single row
-  function standardizeRow(row) {
-    const result = {};
-    columns.forEach(col => {
-      const val = +row[col];
-      const { mean, std } = stats[col] || {};
-      if (!isNaN(val) && std && std !== 0) {
-        result[col] = (val - mean) / std;
+chart2Instance = new Chart(document.getElementById("chart2"), {
+  type: "line",
+  data: {
+    labels,
+    datasets: [
+      {
+        label: "VO2 (mL/min)",
+        data: draw("VO2"),
+        borderWidth: 2,
+        pointRadius: 2,
+        borderColor: "blue",       
+        backgroundColor: "blue"
+      },
+      {
+        label: "VCO2 (mL/min)",
+        data: draw("VCO2"),
+        borderWidth: 2,
+        pointRadius: 2,
+        borderColor: "red",        
+        backgroundColor: "red"
       }
-    });
-    return result;
-  }
-
-  // Standardize the input row
-  const standardizedInput = standardizeRow(newRow);
-
-  // Standardize all rows and compute distances
-  let minDist = Infinity;
-  let nearest = null;
-
-  data.forEach(originalRow => {
-    const standardizedRow = standardizeRow(originalRow);
-
-    // Compute Euclidean distance
-    const dist = columns.reduce((sum, col) => {
-      const a = standardizedInput[col];
-      const b = standardizedRow[col];
-      if (!isNaN(a) && !isNaN(b)) {
-        return sum + Math.pow(a - b, 2);
+    ]
+  },
+  options: {
+    onHover: (event, elements) => {
+      if (elements.length > 0) {
+        const idx = elements[0].index;
+        updateAnimationWithData(matched.time_series[idx]);
+        const caption = document.getElementById("match");
+        caption.innerText = 'HR: ' + matched.time_series[idx].HR +
+          ', RR: ' + matched.time_series[idx].RR +
+          ', VE: ' + matched.time_series[idx].VE +
+          ', VO2: ' + matched.time_series[idx].VO2 +
+          ', VCO2: ' + matched.time_series[idx].VCO2;
       }
-      return sum;
-    }, 0);
-
-    if (dist < minDist) {
-      minDist = dist;
-      nearest = originalRow;
     }
-  });
-
-  return nearest;
-}
-
-function ruochen(person){
-  console.log(person);
-  const rr = person.RR;
-     const hr = person.HR;
-     const ve = person.VE;
-     const vo2 = person.VO2;
-     const vco2 = person.VCO2;
-
-
-     document.getElementById('lungs').style.animationDuration = (60 / rr).toFixed(2) + 's';
-     document.getElementById('heart').style.animationDuration = (60 / hr).toFixed(2) + 's';
-
-
-     const container = document.getElementById('animationArea');
-     container.innerHTML = ''; 
-
-
-     for (let i = 0; i < ve / 2; i++) {
-       const bubble = document.createElement('div');
-       bubble.className = 'bubble';
-       bubble.style.left = `${40 + Math.random() * 20}%`;
-       bubble.style.animationDuration = `${2 + Math.random()}s`;
-       container.appendChild(bubble);
-     }
-
-
-     for (let i = 0; i < vo2 / 100; i++) {
-       const dot = document.createElement('div');
-       dot.className = 'vo2-dot';
-       dot.style.left = `${30 + Math.random() * 10}%`;
-       dot.style.animationDuration = `${1.5 + Math.random()}s`;
-       container.appendChild(dot);
-     }
-     for (let i = 0; i < vco2 / 100; i++) {
-       const dot = document.createElement('div');
-       dot.className = 'vco2-dot';
-       dot.style.left = `${60 + Math.random() * 10}%`;
-       dot.style.animationDuration = `${1.5 + Math.random()}s`;
-       container.appendChild(dot);
-     }
-}
-
-let submit = d3.select("#submit");
-let stage = d3.select('#act-2');
-let data2 = await loadCSV("demo.csv");
-console.log(stage);
-let phys = await loadCSV("demo2.csv");
-
-submit.on("click", (event) => {
-  d3.select('#act-2')
-  .selectAll('*:not(#submit)')
-  .remove();
-  let closeEnough = findNearestNeighbor(data2,me);
-  let closePhys = phys.find(d => d.ID === closeEnough.ID);
-  console.log(closePhys);
-  
-
-  const entries = Object.entries(closePhys).filter(([key]) => key !== 'ID');
-stage
-  .append('h2')
-  .text('Predicted Physiology:');
-
-stage
-  .append('div')
-  .attr('class', 'tuple-display')
-  .style('padding', '10px')
-  .style('border', '1px solid #ccc')
-  .style('border-radius', '6px')
-  .style('margin', '10px 0')
-  .style('background', '#f9f9f9');
-let box = d3.select('.tuple-display');
-// Add each key-value pair as a row
-entries.forEach(([key, value]) => {
-  box.append('div')
-    .style('margin', '4px 0')
-    .html(`<strong>Mean ${key}:</strong> ${value.toFixed(2)}`);
+  }
 });
 
-const container = document.querySelector('#act-2'); // replace with your actual selector
 
-// Create the div
-const newDiv = document.createElement('div');
-newDiv.classList.add('img-holder')
+  ruochen();
+});
 
-// Create the first image
-const lungImg = document.createElement('img');
-lungImg.src = 'img/lung.png';
-lungImg.id = 'lungs';
-lungImg.className = 'breath';
+function findNearest(data, target) {
+  let minDist = Infinity, best = null;
 
-// Create the second image
-const heartImg = document.createElement('img');
-heartImg.src = 'img/heart.png';
-heartImg.id = 'heart';
-heartImg.className = 'heartbeat';
+  for (const row of data) {
+    const dist = Math.sqrt(
+      (row.features[0] - target.Age) ** 2 +
+      (row.features[1] - target.Weight) ** 2 +
+      (row.features[2] - target.Height) ** 2 +
+      (row.features[5] - target.Sex) ** 2
+    );
+    if (dist < minDist) {
+      minDist = dist;
+      best = row;
+    }
+  }
 
-// Append images to the div
-newDiv.appendChild(lungImg);
-newDiv.appendChild(heartImg);
+  return best;
+}
+function ruochen() {
+  document.getElementById("organBox").style.display = "block";
+  document.getElementById("lungs").classList.remove("paused");
+  document.getElementById("heart").classList.remove("paused");
 
-const animationDiv = document.createElement('div');
-animationDiv.className = 'animation-container';
-animationDiv.id = 'animationArea';
+  const animArea = document.getElementById("animationArea");
+  animArea.innerHTML = "";
+  let count = 0;
+  const interval = setInterval(() => {
+    if (count >= 20) {
+      clearInterval(interval);
+      return;
+    }
+    const b1 = document.createElement("div");
+    b1.className = "bubble vo2";
+    b1.style.left = `${20 + Math.random() * 30}px`;
+    animArea.appendChild(b1);
+    setTimeout(() => b1.remove(), 3000);
 
-// Append both new divs to the container
-container.appendChild(newDiv);
-container.appendChild(animationDiv);
+    const b2 = document.createElement("div");
+    b2.className = "bubble vco2";
+    b2.style.left = `${60 + Math.random() * 30}px`;
+    animArea.appendChild(b2);
+    setTimeout(() => b2.remove(), 3000);
 
-ruochen(closePhys);
+    count++;
+  }, 150);
+}
+
+function updateAnimationWithData(point) {
+  const heart = document.getElementById("heart");
+  const lungs = document.getElementById("lungs");
 
 
-  
-})
+  const hr = point.HR || 80;
+  heart.style.animationDuration = `${Math.max(0.3, 120 / hr)}s`;
+
+  const rr = point.RR || 15;
+  lungs.style.animationDuration = `${Math.max(1, 60 / rr)}s`;
+
+
+  const vo2 = point.VO2 || 2000;
+  const vo2Freq = Math.min(300, 60000 / vo2);
+
+  const vco2 = point.VCO2 || 2000;
+  const vco2Freq = Math.min(300, 60000 / vco2);
+
+  if (!window.lastVo2BubbleTime) window.lastVo2BubbleTime = 0;
+  if (Date.now() - window.lastVo2BubbleTime > vo2Freq) {
+    window.lastVo2BubbleTime = Date.now();
+    const bubbleVo2 = document.createElement("div");
+    bubbleVo2.className = "bubble vo2";
+    bubbleVo2.style.left = `${30 + Math.random() * 20}px`;
+    document.getElementById("animationArea").appendChild(bubbleVo2);
+  }
+
+  if (!window.lastVco2BubbleTime) window.lastVco2BubbleTime = 0;
+  if (Date.now() - window.lastVco2BubbleTime > vco2Freq) {
+    window.lastVco2BubbleTime = Date.now();
+    const bubbleVco2 = document.createElement("div");
+    bubbleVco2.className = "bubble vco2";
+    bubbleVco2.style.left = `${30 + Math.random() * 20}px`;
+    document.getElementById("animationArea").appendChild(bubbleVco2);
+  }
+}
+
+let activeLabel = null;
+
+function setupSliders(data) {
+  const caption = document.getElementById("caption");
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    const em = document.getElementById(slider.id.replace("Slider", "Val"));
+    const label = document.querySelector(`label[for="${slider.id}"]`);
+    slider.addEventListener('input', () => {  
+      if (slider.id === "sexSlider") {
+        em.textContent = slider.value === "0" ? "Male" : "Female";
+      }
+      else {
+        em.textContent = slider.value;
+      }
+      if (activeLabel && activeLabel !== label) {
+        activeLabel.style.fontWeight = 'normal';
+      }
+      label.style.fontWeight = 'bold';
+      activeLabel = label;
+    });
+    slider.addEventListener('input', () => {
+      const attr = slider.id.replace("Slider", "");
+      const key = attr.charAt(0).toUpperCase() + attr.slice(1);
+      me[key] = +slider.value;
+      caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
+      drawHistogram(data, key);
+
+      const gradient = (slider.value - slider.min) / (slider.max - slider.min) * 100 + '%';
+      slider.style.setProperty('--gradient', gradient);
+    });
+  });
+}

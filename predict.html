@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maximum Exercise Behavior</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/+esm" type="module"></script>
+
+  <script type="module" src="global.js"></script>
+</head>
+<body>
+  <h1>How Long Can You Run?</h1>
+  <h2>Input your traits</h2>
+
+  <div class="top-section">
+
+    <svg id="histogram" width="600" height="400"></svg>
+
+
+    <div class="controls-left">
+      <div id="slider-block">
+        <label for="ageSlider" id="ageLabel">Age:
+          <input id="ageSlider" type="range" min="10" max="59" value="35" />
+          <em id="ageVal">35</em> years old
+        </label>
+      </div>
+      <div id="slider-block">
+        <br/>
+        <label for="weightSlider" id="weightLabel">Weight:
+          <input id="weightSlider" type="range" min="50" max="99" value="75" />
+          <em id="weightVal">75</em> kg
+        </label>
+      </div>
+      <div id="slider-block">
+        <br/>
+        <label for="heightSlider" id="heightLabel">Height:
+          <input id="heightSlider" type="range" min="150" max="199" value="175" />
+          <em id="heightVal">175</em> cm
+        </label>
+      </div>
+      <div id="slider-block">
+        <br/>
+        <label for="sexSlider" id="sexLabel">Sex:
+          <input id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
+          <em id="sexVal">Male</em>
+        </label>
+      </div>
+        <br/>
+        <p id="caption">
+          The distribution of the top 100 longest lasting runners' height vs. your selected height.
+        </p>
+    </div>
+  </div>
+
+
+  <div class="middle-section">
+    <label>Temperature (°C):
+      <input type="number" id="temperatureInput" value="22" />
+    </label>
+    <label>Humidity (%):
+      <input type="number" id="humidityInput" value="40" />
+    </label>
+    <button id="submit">Create Runner!</button>
+  </div>
+        <p id="match">
+        </p>
+  <div class="bottom-section">
+    <div class="chart-container">
+      <canvas id="chart1"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="chart2"></canvas>
+    </div>
+    <div class="organ-container">
+      <div class="img-holder" id="organBox" style="display: none;">
+        <img src="img/lung.png" id="lungs" class="breath paused" />
+        <img src="img/heart.png" id="heart" class="heartbeat paused" />
+      </div>
+      <div class="animation-container" id="animationArea"></div>
+    </div>
+  </div>
+
+
+  <div class="tooltip" id="tooltip"></div>
+</body>
+</html>
