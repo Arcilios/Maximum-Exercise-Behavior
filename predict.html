@@ -16,91 +16,120 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div id="container">
+    <div id="intro-page">
+      <div id="title">
+        <h1>How Long Can You Run?</h1>
+        <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
+      </div>
+    </div>
+    
+    <div id="histogram-page">
+      <div id="scrolly1">
+        <div class="moving explanation">
+          <div class="story-step" id="story-child">
+            <h2>child</h2>
+            <p>set sliders to values a child would have and disable sliders<br><br><br><br><br><br><br><br><br><br><br><br></p>
+          </div>
+          <div class="story-step" id="story-adult">
+            <h2>adult</h2>
+            <p>set sliders to values an adult would have and disable sliders</p><br><br><br><br><br><br><br><br><br><br><br><br>
+          </div>
+          <div class="story-step" id="story-old">
+            <h2>old</h2>
+            <p>set sliders to values an old guy would have and disable sliders</p><br><br><br><br><br><br><br><br><br><br><br><br>
+          </div>
+          <div class="story-step" id="story-any">
+            <h2>pick your own</h2>
+            <p>dont disable sliders</p><br><br><br><br><br><br><br><br><br><br><br><br>
+          </div>
+        </div>
+        <div class="sticky">
+          <div class="graph">
+            <p id="caption">
+              The distribution of the top 100 longest lasting runners' height vs. your selected height.
+            </p>
+            <svg id="histogram" width="700" height="400"></svg>
+          </div>
+          <div class="controls-left">
+            <h2>Traits</h2>
+            <div id="slider-block">
+              <label for="ageSlider" id="ageLabel">Age
+                <input class="slider-histogram" id="ageSlider" type="range" min="10" max="59" value="35" />
+              </label>
+              <em id="ageVal">35 years</em>
+            </div>
+            <div id="slider-block">
+              <br/>
+              <label for="weightSlider" id="weightLabel">Weight
+                <input class="slider-histogram" id="weightSlider" type="range" min="50" max="99" value="75" />
+              </label>
+              <em id="weightVal">75 kg</em>
+            </div>
+            <div id="slider-block">
+              <br/>
+              <label for="heightSlider" id="heightLabel">Height
+                <input class="slider-histogram" id="heightSlider" type="range" min="150" max="199" value="175" />
+              </label>
+              <em id="heightVal">175 cm</em>
+            </div>
+            <!-- <div id="slider-block">
+              <br/>
+              <label for="sexSlider" id="sexLabel">Sex
+                <input class="slider-histogram" id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
+              </label>
+              <em id="sexVal">Male</em>
+            </div> -->
+            <form class="form-histogram" id="sexForm">
+              <input type="radio" name="choice" id="male" value="0" hidden>
+              <label for="male" class="btn">Male</label>
+              <input type="radio" name="choice" id="female" value="1" hidden>
+              <label for="female" class="btn">Female</label>
+            </form>
+              <br/>
+          </div>
+        </div>
+      </div>
+    </div>
    
-  <div id="title">
-    <h1>How Long Can You Run?</h1>
-    <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
-  </div>
-  <h2>Input your traits</h2>
-  <div class="top-section">
-    <div class="controls-left">
-      <div id="slider-block">
-        <label for="ageSlider" id="ageLabel">Age
-          <input class="slider-histogram" id="ageSlider" type="range" min="10" max="59" value="35" />
-        </label>
-        <em id="ageVal">35 years</em>
+    <div id="middle-page">
+      <div class="middle-section">
+        <div id="slider-block">
+          <label for="temperatureSlider" id="temperatureLabel">Temperature
+            <input class="slider-line" type="range" id="temperatureSlider" min="15" max="32" value="22" step="1"/>
+          </label>
+          <em id="temperatureVal">22 °C</em>
+        </div>
+        <div id="slider-block">
+          <label for="humiditySlider" id="humidityLabel">Humidity
+            <input class="slider-line" type="range" id="humiditySlider" min="24" max="69" value="40" />
+          </label>
+          <em id="humidityVal">40 %</em>
+        </div>
+        <button id="submit">Create Runner!</button>
       </div>
-      <div id="slider-block">
-        <br/>
-        <label for="weightSlider" id="weightLabel">Weight
-          <input class="slider-histogram" id="weightSlider" type="range" min="50" max="99" value="75" />
-        </label>
-        <em id="weightVal">75 kg</em>
+            <p id="match">
+            </p>
+            <div class="bottom-section">
+      <div class="chart-container">
+        <canvas id="chart1"></canvas>
       </div>
-      <div id="slider-block">
-        <br/>
-        <label for="heightSlider" id="heightLabel">Height
-          <input class="slider-histogram" id="heightSlider" type="range" min="150" max="199" value="175" />
-        </label>
-        <em id="heightVal">175 cm</em>
+      <div class="chart-container">
+        <canvas id="chart2"></canvas>
       </div>
-      <!-- <div id="slider-block">
-        <br/>
-        <label for="sexSlider" id="sexLabel">Sex
-          <input class="slider-histogram" id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
-        </label>
-        <em id="sexVal">Male</em>
-      </div> -->
-      <form class="form-histogram" id="sexForm">
-        <input type="radio" name="choice" id="male" value="0" hidden>
-        <label for="male" class="btn">Male</label>
-        <input type="radio" name="choice" id="female" value="1" hidden>
-        <label for="female" class="btn">Female</label>
-      </form>
-        <br/>
-    </div>
-    <div class="graph">
-      <p id="caption">
-          The distribution of the top 100 longest lasting runners' height vs. your selected height.
-        </p>
-      <svg id="histogram" width="650" height="400"></svg>
-    </div>
-  </div>
-
-  <div class="middle-section">
-    <div id="slider-block">
-      <label for="temperatureSlider" id="temperatureLabel">Temperature
-        <input class="slider-line" type="range" id="temperatureSlider" min="15" max="32" value="22" step="1"/>
-      </label>
-      <em id="temperatureVal">22 °C</em>
-    </div>
-    <div id="slider-block">
-      <label for="humiditySlider" id="humidityLabel">Humidity
-        <input class="slider-line" type="range" id="humiditySlider" min="24" max="69" value="40" />
-      </label>
-      <em id="humidityVal">40 %</em>
-    </div>
-    <button id="submit">Create Runner!</button>
-  </div>
-        <p id="match">
-        </p>
-  <div class="bottom-section">
-    <div class="chart-container">
-      <canvas id="chart1"></canvas>
-    </div>
-    <div class="chart-container">
-      <canvas id="chart2"></canvas>
-    </div>
-    <div class="organ-container">
-      <div class="img-holder" id="organBox" style="display: none;">
-        <img src="img/lung.png" id="lungs" class="breath paused" />
-        <img src="img/heart.png" id="heart" class="heartbeat paused" />
+      <div class="organ-container">
+        <div class="img-holder" id="organBox" style="display: none;">
+          <img src="img/lung.png" id="lungs" class="breath paused" />
+          <img src="img/heart.png" id="heart" class="heartbeat paused" />
+        </div>
+        <div class="animation-container" id="animationArea"></div>
       </div>
-      <div class="animation-container" id="animationArea"></div>
     </div>
-  </div>
+    </div>
+    
 
 
-  <div class="tooltip" id="tooltip"></div>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
 </body>
 </html>

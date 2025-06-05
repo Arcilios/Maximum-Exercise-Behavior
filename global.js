@@ -1,4 +1,5 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
 
 let dataset, data2, phys, data;
 let chart1Instance, chart2Instance;
@@ -62,8 +63,10 @@ function drawHistogram(data, attribute) {
   const maxPerCol = 20;
   const binWidth = width / bins.length;
 
+  let male = true;
+
   bins.forEach((bin, i) => {
-    const x0 = i * binWidth + (binWidth - squareSize) / 2 - 30;
+    const x0 = i * binWidth + (binWidth - squareSize) / 2 - 10;
     bin.forEach((d, j) => {
       const col = Math.floor(j / maxPerCol);
       const row = j % maxPerCol;
@@ -92,12 +95,33 @@ function drawHistogram(data, attribute) {
           d3.select("#tooltip").style("opacity", 0);
         });
     });
-
-    g.append("text")
-      .attr("transform", `translate(${x0 + squareSize/2 - 30}, ${height - 180 + 18 + 80}) rotate(30)`)
+    
+    if (attribute === "Sex") {
+      let label = "";
+      let xFix = 25
+      if (male) {
+        label = "Male";
+        male = !male;
+      }
+      else {
+        label = "Female";
+        male = !male;
+        xFix = -10
+      }
+      g.append("text")
+      .attr("transform", `translate(${x0 + squareSize/2 - 10 + xFix}, ${height - 180 + 18 + 80}) rotate(30)`)
+      .style("text-anchor", "start")
+      .style("font-size", "12px")
+      .text(label);
+    }
+    else {
+      g.append("text")
+      .attr("transform", `translate(${x0 + squareSize/2 - 10}, ${height - 180 + 18 + 80}) rotate(30)`)
       .style("text-anchor", "start")
       .style("font-size", "12px")
       .text(`${bins[i].x0.toFixed(1)} - ${bins[i].x1.toFixed(1)}`);
+    }
+    
   });
 
   const special = me[attribute];
@@ -105,7 +129,7 @@ function drawHistogram(data, attribute) {
     const idx = bins.findIndex(bin => special >= bin.x0 && special <= bin.x1);
     if (idx !== -1) {
       const binObj = bins[idx];
-      const x0 = idx * binWidth + (binWidth - squareSize) / 2 - 30;
+      const x0 = idx * binWidth + (binWidth - squareSize) / 2 - 10;
       const col = Math.floor(binObj.length / maxPerCol);
       const row = binObj.length % maxPerCol;
       const xx = x0 + col * (squareSize + gap);
@@ -146,10 +170,11 @@ function drawHistogram(data, attribute) {
   }
   g.append("text")
     .attr("class", "x-axis-label")
-    .attr("x", width / 2 - 30 - 20)
+    .attr("x", width / 2 - 25 - 10)
     .attr("y", height - 100 + 80)
     .style("font-size", "16px")
     .text(attribute.charAt(0).toUpperCase() + attribute.slice(1) + label);
+
 }
 
 
@@ -435,3 +460,19 @@ function setupSliders(data) {
   });
 }
 
+//scrollytelling
+function onStepEnter(response) {
+  response.element.classList.add('active');
+}
+function onStepExit(response) {
+  response.element.classList.remove('active');
+}
+
+const scroller = scrollama();
+scroller
+  .setup({
+    container: '#scrolly1',
+    step: '#scrolly1 .story-step',
+  })
+  .onStepEnter(onStepEnter)
+  .onStepExit(onStepExit);

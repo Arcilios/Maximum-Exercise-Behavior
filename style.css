@@ -19,17 +19,42 @@ body {
   background: var(--color-background);
   margin: 0;
   padding: 0;
+  overflow: hidden;
+}
+
+#container {
+  height: 100vh;          
+  overflow-y: scroll; 
+  scroll-snap-type: y proximity;
+  > div {
+    scroll-snap-align: center;
+    border: solid red 1px;
+  }
+  > #histogram-page {
+    scroll-snap-align: none;
+  }
+}
+
+#intro-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 
 #title {
+  display: flex;
+  flex-direction: column;
   background: var(--accent-color);
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+  width: 100%;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 4rem;
   padding: 20px 0;
-  
   color: black;
 }
 
@@ -44,14 +69,40 @@ h3 {
   font-size: 100%;
 }
 
-.top-section {
+#histogram-page {
+  width: 100%;
+  height: 200vh;
+}
+
+#scrolly1 {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 100px;
+  gap: 20px;
   margin: 30px auto;
-  /* max-width: 1200px; */
   flex-wrap: wrap;
+  position: relative;
+}
+
+.explanation {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  gap: 50px;
+  position: relative;
+  > div {
+    max-width: 100%;
+    border: solid gray 1px;
+  }
+}
+
+.sticky {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  position: sticky;
+  top: 20vh;
+  height: 50vh;
 }
 
 #caption {
@@ -60,8 +111,10 @@ h3 {
 
 .graph {
   justify-content: start;
-  justify-items: start;
+  justify-items: center;
   min-width: 700px;
+  padding-top: 10px;
+  border: solid gray 1px;
 }
 
 .controls-left {
@@ -124,9 +177,9 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-#sexSlider {
+/* #sexSlider {
   --gradient: 0%;
-}
+} */
 
 #temperatureSlider {
   --gradient: 41.18%;
@@ -167,6 +220,10 @@ input[type="radio"]:checked + label {
   color: var(--color-background);
 }
 
+#middle-page {
+  width: 100%;
+  height: 100vh;
+}
 
 .middle-section {
   margin-top: 20px;
