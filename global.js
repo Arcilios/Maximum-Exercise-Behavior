@@ -75,24 +75,35 @@ function drawHistogram(data, attribute) {
 
       g.append("rect")
         .attr("x", xx)
-        .attr("y", yy - squareSize)
+        .attr("y", 0) // Start at top
         .attr("width", squareSize)
         .attr("height", squareSize)
         .attr("fill", "#4a90e2")
         .attr("stroke", "#2e6bbf")
-        .on("mouseover", event => {
-          d3.select("#tooltip")
-            .style("opacity", 1)
-            .html(`<div><strong>ID:</strong> ${d.ID ?? "Unknown"}</div>
-                   <div><strong>${attribute}:</strong> ${d[attribute]}</div>`);
-        })
-        .on("mousemove", event => {
-          d3.select("#tooltip")
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 20) + "px");
-        })
-        .on("mouseout", () => {
-          d3.select("#tooltip").style("opacity", 0);
+        .attr("opacity", 0) // Start transparent
+        .transition()
+        .duration(400)
+        .delay(j * 10 + i * 20) // Stagger animation by position
+        .ease(d3.easeQuadInOut)
+        .attr("y", yy - squareSize) // Animate to final position
+        .attr("opacity", 1) // Fade in
+        .on("end", function() {
+          // Add mouse events after animation completes
+          d3.select(this)
+            .on("mouseover", event => {
+              d3.select("#tooltip")
+                .style("opacity", 1)
+                .html(`<div><strong>ID:</strong> ${d.ID ?? "Unknown"}</div>
+                       <div><strong>${attribute}:</strong> ${d[attribute]}</div>`);
+            })
+            .on("mousemove", event => {
+              d3.select("#tooltip")
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", () => {
+              d3.select("#tooltip").style("opacity", 0);
+            });
         });
     });
     
@@ -137,23 +148,34 @@ function drawHistogram(data, attribute) {
 
       g.append("rect")
         .attr("x", xx)
-        .attr("y", yy - squareSize)
+        .attr("y", 0) // Start at top
         .attr("width", squareSize)
         .attr("height", squareSize)
         .attr("fill", "yellow")
         .attr("stroke", "#b59f00")
-        .on("mouseover", event => {
-          d3.select("#tooltip")
-            .style("opacity", 1)
-            .html(`<strong>${attribute} (you):</strong> ${special}`);
-        })
-        .on("mousemove", event => {
-          d3.select("#tooltip")
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 20) + "px");
-        })
-        .on("mouseout", () => {
-          d3.select("#tooltip").style("opacity", 0);
+        .attr("opacity", 0) // Start transparent
+        .transition()
+        .duration(600)
+        .delay(binObj.length * 10 + idx * 20 + 200) // Delay after regular squares
+        .ease(d3.easeBounceOut)
+        .attr("y", yy - squareSize) // Animate to final position
+        .attr("opacity", 1) // Fade in
+        .on("end", function() {
+          // Add mouse events after animation completes
+          d3.select(this)
+            .on("mouseover", event => {
+              d3.select("#tooltip")
+                .style("opacity", 1)
+                .html(`<strong>${attribute} (you):</strong> ${special}`);
+            })
+            .on("mousemove", event => {
+              d3.select("#tooltip")
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", () => {
+              d3.select("#tooltip").style("opacity", 0);
+            });
         });
     }
   }
