@@ -61,69 +61,70 @@
   border-top: 2px solid #ddd;
 }
 
-#tocbtn {
-  position: absolute;
+
+#toc-wrapper {
+  position: fixed;
   top: 20px;
-  left: 20px;
-  width: 30px;
-  height: 24px;
+  left: 40px;
+  z-index: 100;
+}
+
+#toggle-toc {
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+#emoji-toc {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-#tocbtn .bar {
-  height: 4px;
-  border-radius: 2px;
-  background-color: rgb(24, 24, 24);
-}
-
-#toc {
-  position: absolute;
-  display: none;
-  top: 15px;
-  left: 55px;
-  width: 160px;
-  background-color: #f9f9f9;
-  border: 1px solid #cccccc;
-  padding: 10px 15px;
-  z-index: 999;
+  gap: 12px;
+  background-color: rgba(255, 255, 255, 0.6); 
+  border: 1px solid rgba(204, 204, 204, 0.5);
+  border-radius: 10px;
+  padding: 10px 12px;
   font-family: "Lexend", sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  border-radius: 8px;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05); 
+  transition: background-color 0.3s ease;
+  padding: 6px 8px;
 }
 
-#toc h3 {
-  margin-top: 0;
-  font-size: 16px;
-  text-align: center;
-}
-
-#toc ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-#toc li {
-  margin-bottom: 6px;
-}
-
-#toc a {
-  color: #006699;
+#emoji-toc a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
+  font-size: 16px;
+  color: black;
+  transition: transform 0.2s;
 }
 
-#toc a:hover {
-  text-decoration: underline;
+#emoji-toc a:hover {
+  transform: scale(1.1);
+  color: #0077cc;
 }
 
 html {
   scroll-behavior: smooth;
+}
+#emoji-toc .emoji {
+  font-size: 20px;
+}
+
+#emoji-toc .label {
+  display: inline-block;
+}
+
+#toc-wrapper.collapsed .label {
+  display: none;
+}
+
+#toc-wrapper.collapsed #emoji-toc {
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(204, 204, 204, 0.3);
+  box-shadow: none;
 }

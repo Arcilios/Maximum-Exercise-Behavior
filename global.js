@@ -623,7 +623,6 @@ function onStepEnter(response) {
       Humidity: 40
     };
     drawLineChart(dataset, currentData);
-
   }
 
   if (id === "story-any") {
@@ -675,23 +674,14 @@ scroller
   .onStepExit(onStepExit)
   .onStepEnter(onStepEnter);
 
-const toc = document.getElementById('toc');
-const btn = document.getElementById('tocbtn');
-btn.addEventListener('click', () => {
-  const isHidden = toc.style.display === 'none' || toc.style.display === '';
-  toc.style.display = isHidden ? 'block' : 'none';
-  btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
-});
-
 function drawLineChart(dataset, me) {
   const svg = d3.select("#lineChart");
   const width = +svg.attr("width") - 60;
   const height = +svg.attr("height") - 60;
   const margin = { top: 20, right: 40, bottom: 40, left: 60 };
 
-  svg.selectAll("*").remove(); // clear previous chart
+  svg.selectAll("*").remove();
 
- 
   const total = dataset.length;
   const selectedIndices = new Set();
   while (selectedIndices.size < 50 && selectedIndices.size < total) {
@@ -699,19 +689,16 @@ function drawLineChart(dataset, me) {
   }
   const selectedArray = Array.from(selectedIndices);
 
-  
   const nearestPerson = findNearest(dataset, me);
-
-
   const nearestIndex = dataset.findIndex(d => d === nearestPerson);
 
-  
-  if (!selectedIndices.has(nearestIndex)) {
+  if (nearestIndex >= 0 && !selectedIndices.has(nearestIndex)) {
     selectedArray.push(nearestIndex);
   }
- 
+
   const allTimePoints = [];
   const allHRPoints = [];
+
   selectedArray.forEach(idx => {
     const person = dataset[idx];
     if (!person || !Array.isArray(person.time_series)) return;
@@ -723,7 +710,6 @@ function drawLineChart(dataset, me) {
     });
   });
 
-  // Scales
   const xScale = d3.scaleLinear()
     .domain(d3.extent(allTimePoints))
     .range([margin.left, margin.left + width]);
@@ -732,7 +718,6 @@ function drawLineChart(dataset, me) {
     .domain([d3.min(allHRPoints) * 0.95, d3.max(allHRPoints) * 1.05])
     .range([margin.top + height, margin.top]);
 
-  // Axes
   const xAxis = d3.axisBottom(xScale).ticks(10);
   const yAxis = d3.axisLeft(yScale).ticks(10);
 
@@ -757,27 +742,37 @@ function drawLineChart(dataset, me) {
     .attr("text-anchor", "middle")
     .text("HR");
 
-  // Line generator
   const lineGen = d3.line()
     .x(d => xScale(d.time))
     .y(d => yScale(d.HR))
     .curve(d3.curveMonotoneX);
 
-  // 4. Draw lines for 50 people (light color)
   selectedArray.forEach(idx => {
+    if (idx === nearestIndex) return;
     const person = dataset[idx];
     const data = person?.time_series || [];
 
     svg.append("path")
       .datum(data)
       .attr("fill", "none")
-      .attr("stroke", idx === nearestIndex ? "red" : "steelblue")
-      .attr("stroke-width", idx === nearestIndex ? 3 : 1)
-      .attr("opacity", idx === nearestIndex ? 1 : 0.3)
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1)
+      .attr("opacity", 0.3)
       .attr("d", lineGen);
   });
 
-  // 5. Legend for nearest person
+  if (nearestIndex >= 0) {
+    const nearestData = dataset[nearestIndex]?.time_series || [];
+
+    svg.append("path")
+      .datum(nearestData)
+      .attr("fill", "none")
+      .attr("stroke", "red")
+      .attr("stroke-width", 3)
+      .attr("opacity", 1)
+      .attr("d", lineGen);
+  }
+
   svg.append("text")
     .attr("x", margin.left + 10)
     .attr("y", margin.top + 10)
