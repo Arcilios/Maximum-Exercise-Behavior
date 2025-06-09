@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 100px;
   padding: 40px;
   flex-wrap: wrap; /* 保证小屏幕时能换行 */
 }

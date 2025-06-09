@@ -452,17 +452,20 @@ document.getElementById("submit2").addEventListener("click", () => {
         }
       },
       scales: {
-    x: {
-      title: {
-        display: true,
-        text: "Time (min)"
-      },
-      ticks: {
-        callback: function(value, index) {
-          const seconds = this.getLabelForValue(value);
-          const minutes = Math.floor(seconds / 60);
-          return minutes % 2 === 0 ? `${minutes} min` : '';
-        }}}}
+        x: {
+          type: 'linear',
+          min: 0,
+          max: Math.ceil(Math.max(...labels) / 60) * 60,
+          ticks: {
+              stepSize: 60,
+              callback: v => Math.floor(v / 60)
+            },
+          title: {
+            display: true,
+            text: 'Time (min)'
+          }
+        }
+      }
     }
   });
 
@@ -504,17 +507,21 @@ document.getElementById("submit2").addEventListener("click", () => {
       },
 
     scales: {
-    x: {
-      title: {
-        display: true,
-        text: "Time (min)"
-      },
-      ticks: {
-        callback: function(value, index) {
-          const seconds = this.getLabelForValue(value);
-          const minutes = Math.floor(seconds / 60);
-          return minutes % 2 === 0 ? `${minutes} min` : '';
-        }}}}}
+        x: {
+          type: 'linear',
+          min: 0,
+          max: Math.ceil(Math.max(...labels) / 60) * 60,
+          ticks: {
+              stepSize: 60,
+              callback: v => Math.floor(v / 60)
+            },
+          title: {
+            display: true,
+            text: 'Time (min)'
+          }
+        }
+      }
+    }
   });
 
   ruochen(); // trigger animation
@@ -523,6 +530,10 @@ document.getElementById("submit2").addEventListener("click", () => {
 //scrollytelling
 function onStepEnter(response) {
   response.element.classList.add('active');
+  const activeElement = document.querySelector('#scrolly1 .story-step.active');
+  if (activeElement) {
+    console.log(activeElement.id);
+  }
 }
 function onStepExit(response) {
   response.element.classList.remove('active');
@@ -533,6 +544,9 @@ scroller
   .setup({
     container: '#scrolly1',
     step: '#scrolly1 .story-step',
+    offset: 0.2,
   })
-  .onStepEnter(onStepEnter)
-  .onStepExit(onStepExit);
+  
+  
+  .onStepExit(onStepExit)
+  .onStepEnter(onStepEnter);

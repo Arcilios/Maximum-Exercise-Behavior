@@ -8,48 +8,50 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7/+esm" type="module"></script>
   <script type="module" src="global.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href = "story.css"
+  <link rel="stylesheet" href = "story.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="container">
-<div id="intro-page">
-  <div id="title">
-    <h1>How Long Can You Run?</h1>
-    <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
-  </div>
-</div>
-<div id="description">
-  <div class="intro-block">
-    <p>
-      This project brings to life the data behind a large-scale treadmill exercise study. Using real physiological records from nearly 1,000 participants, we invite you to explore how different body types and environments affect endurance—and simulate what your own cardiopulmonary system might experience under maximal effort.
-    </p>
-  </div>
-  <div class="intro-block">
-    <img src="img/treadmile.png" alt="Treadmill" />
-  </div>
-</div>
+    <div id="intro-page">
+      <div id="title">
+        <h1>How Long Can You Run?</h1>
+        <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
+      </div>
+    </div>
+    <div id="description">
+      <div class="intro-block">
+        <p>
+          Have you ever wondered how long you should run for? This project brings to life the data behind a large-scale treadmill exercise study. Using <a href="https://physionet.org/content/treadmill-exercise-cardioresp/1.0.1/" target="_blank">physiological records</a> from nearly 1,000 participants, we invite you to explore how different body types and environments affect endurance—and simulate what your own cardiopulmonary system might experience under maximal effort.
+        </p>
+      </div>
+      <div class="intro-block">
+        <img src="img/treadmile.png" alt="Treadmill" />
+      </div>
+    </div>
 
     <div id="histogram-page">
       <div id="scrolly1">
         <div class="moving explanation">
+          <hr>
           <div class="story-step" id="story-child">
             <h2>Child</h2>
-            <p>Here’s what a typical child’s traits might look like. Scroll down to see how body size affects endurance potential. Sliders are locked in this mode.</p>
+            <p>Here's what a typical child's traits might look like. They have a small frame and are generally shorter and lighter than the average adult. Scroll down to see how body size affects endurance potential.</p>
           </div>
           <div class="story-step" id="story-adult">
             <h2>Adult</h2>
-            <p>Adult runner traits are typically taller and heavier. See how these settings shift your position in the histogram. Sliders are locked in this mode.</p>
+            <p>Adults are normally taller and heavier than children and have more understanding of how to run. See how these settings shift your position in the histogram.</p>
           </div>
           <div class="story-step" id="story-old">
-            <h2>Old</h2>
-            <p>Older individuals may experience diminished VO₂ max and respiratory capacity. This step simulates their profile. Sliders are locked in this mode.</p>
+            <h2>Senior</h2>
+            <p>Older individuals may experience diminished VO₂ max and respiratory capacity. This step simulates their profile.</p>
           </div>
           <div class="story-step" id="story-any">
             <h2>Pick Your Own</h2>
-            <p>Now it’s your turn. Set the sliders freely and observe how your body traits compare with elite endurance subjects.</p>
+            <p>Now it's your turn. Set the sliders freely and observe how your traits compare with other subjects. Feel free to experiment with different builds and options to see the difference.</p>
           </div>
+          <hr>
         </div>
         <div class="sticky">
           <div class="graph">
@@ -120,8 +122,8 @@
 <br/>
 <p>
   This simulation lets you explore how small changes in personal traits or environmental conditions 
-  can shift the body's performance during endurance training. Watch as the graphs and animations 
-  adjust in real time, helping you visualize the inner workings of the human cardiopulmonary system.
+  can shift the body's performance during endurance training. Watch as the animations 
+  update in real time, helping you visualize the inner workings of the human cardiopulmonary system.
 </p>
 
     </div>
@@ -134,21 +136,21 @@
 
     <div id="slider-block">
       <label for="ageSlider2" id="ageLabel2">Age
-        <input class="slider-histogram" id="ageSlider2" type="range" min="10" max="59" value="35" />
+        <input class="slider-histogram2" id="ageSlider2" type="range" min="10" max="59" value="35" />
       </label>
       <em id="ageVal2">35 years</em>
     </div>
 
     <div id="slider-block">
       <label for="weightSlider2" id="weightLabel2">Weight
-        <input class="slider-histogram" id="weightSlider2" type="range" min="50" max="99" value="75" />
+        <input class="slider-histogram2" id="weightSlider2" type="range" min="50" max="99" value="75" />
       </label>
       <em id="weightVal2">75 kg</em>
     </div>
 
     <div id="slider-block">
       <label for="heightSlider2" id="heightLabel2">Height
-        <input class="slider-histogram" id="heightSlider2" type="range" min="150" max="199" value="175" />
+        <input class="slider-histogram2" id="heightSlider2" type="range" min="150" max="199" value="175" />
       </label>
       <em id="heightVal2">175 cm</em>
     </div>
@@ -181,15 +183,15 @@
 <div class="top-row">
   <p id="match">Please press "Create Runner!" to see your stats.</p>
 
-<div class="organ-container">
-  <div class="organ-row">
-    <div class="img-holder" id="organBox" >
-      <img src="img/lung.png" id="lungs" class="breath paused" />
-      <img src="img/heart.png" id="heart" class="heartbeat paused" />
+  <div class="organ-container">
+    <div class="organ-row">
+      <div class="img-holder" id="organBox" >
+        <img src="img/lung.png" id="lungs" class="breath paused" />
+        <img src="img/heart.png" id="heart" class="heartbeat paused" />
+      </div>
+      <div class="animation-container" id="animationArea"></div>
     </div>
-    <div class="animation-container" id="animationArea"></div>
   </div>
-</div>
 </div>
       <div class="bottom-section">
         <div class="chart-container">
