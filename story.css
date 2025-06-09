@@ -13,7 +13,7 @@
 }
 
 #overview-page p {
-  font-size: 1.3rem;
+  font-size: 1.25vw;
   line-height: 1;
   text-align: center;
 }
@@ -52,7 +52,7 @@
 
 .story-text {
   flex: 2;
-  font-size: 1rem;
+  font-size: 1.25vw;
   line-height: 1.6;
   text-align: left;;
 }
@@ -60,7 +60,6 @@
   background-color: #f8f8f8;
   border-top: 2px solid #ddd;
 }
-
 
 #toc-wrapper {
   position: fixed;

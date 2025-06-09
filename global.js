@@ -350,7 +350,6 @@ function setupSliders(data) {
       const attr = "sex";
       const key = attr.charAt(0).toUpperCase() + attr.slice(1);
       me[key] = +checkedRadio.value;
-      console.log(checkedRadio.value)
       caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
       drawHistogram(data, key);
       currentData.Sex = checkedRadio.value
@@ -702,7 +701,6 @@ function drawLineChart(dataset, me) {
 
   const nearestPerson = findNearest(dataset, me);
   const nearestIndex = dataset.findIndex(d => d === nearestPerson);
-  console.log(nearestIndex)
   if (nearestIndex >= 0 && !selectedIndices.has(nearestIndex)) {
     selectedArray.push(nearestIndex);
   }
