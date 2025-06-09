@@ -4,7 +4,7 @@
   align-items: center;
   gap: 100px;
   padding: 40px;
-  flex-wrap: wrap; /* 保证小屏幕时能换行 */
+  flex-wrap: wrap; 
 }
 
 .intro-block {
@@ -58,4 +58,48 @@
 #story-explanation {
   background-color: #f8f8f8;
   border-top: 2px solid #ddd;
+}
+
+#toc {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  width: 160px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  z-index: 999;
+  font-family: "Lexend", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  border-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+
+#toc h3 {
+  margin-top: 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+#toc ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#toc li {
+  margin-bottom: 6px;
+}
+
+#toc a {
+  color: #006699;
+  text-decoration: none;
+}
+
+#toc a:hover {
+  text-decoration: underline;
+}
+html {
+  scroll-behavior: smooth;
 }
