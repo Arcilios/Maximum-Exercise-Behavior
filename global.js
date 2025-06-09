@@ -450,7 +450,19 @@ document.getElementById("submit2").addEventListener("click", () => {
             ', VO2: ' + matched.time_series[idx].VO2 +
             ', VCO2: ' + matched.time_series[idx].VCO2;
         }
-      }
+      },
+      scales: {
+    x: {
+      title: {
+        display: true,
+        text: "Time (min)"
+      },
+      ticks: {
+        callback: function(value, index) {
+          const seconds = this.getLabelForValue(value);
+          const minutes = Math.floor(seconds / 60);
+          return minutes % 2 === 0 ? `${minutes} min` : '';
+        }}}}
     }
   });
 
@@ -473,7 +485,7 @@ document.getElementById("submit2").addEventListener("click", () => {
           borderWidth: 2,
           pointRadius: 2,
           borderColor: "red",
-          backgroundColor: "red"
+          backgroundColor: "red" 
         }
       ]
     },
@@ -489,8 +501,20 @@ document.getElementById("submit2").addEventListener("click", () => {
             ', VO2: ' + matched.time_series[idx].VO2 +
             ', VCO2: ' + matched.time_series[idx].VCO2;
         }
-      }
-    }
+      },
+
+    scales: {
+    x: {
+      title: {
+        display: true,
+        text: "Time (min)"
+      },
+      ticks: {
+        callback: function(value, index) {
+          const seconds = this.getLabelForValue(value);
+          const minutes = Math.floor(seconds / 60);
+          return minutes % 2 === 0 ? `${minutes} min` : '';
+        }}}}}
   });
 
   ruochen(); // trigger animation
