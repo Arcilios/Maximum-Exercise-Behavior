@@ -33,7 +33,7 @@ body {
   }
   > #histogram-page {
     scroll-snap-align: none;
-    height: 220vh;
+    height: 240vh;
   }
 }
 
@@ -46,6 +46,7 @@ body {
 }
 
 #intro-page {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,7 +98,7 @@ h3 {
 .explanation {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 25%;
   gap: 80px;
   padding-top: 30px;
   position: relative;
@@ -135,12 +136,23 @@ h3 {
 }
 
 .graph {
+  display: none;
   justify-content: start;
   justify-items: center;
   min-width: 700px;
   padding-top: 10px;
   border: solid gray 1px;
 }
+
+.chart {
+  display: none;
+  justify-content: start;
+  justify-items: center;
+  min-width: 700px;
+  padding-top: 10px;
+  border: solid gray 1px;
+}
+
 
 .controls-left {
   text-align: left;
@@ -249,7 +261,7 @@ input[type="radio"]:checked + label {
   color: var(--color-background);
 }
 
-#middle-page {
+#runner-page {
   width: 100%;
   height: 100vh;
 }
@@ -387,7 +399,7 @@ canvas {
   opacity: 0;
 }
 
-#description {
+#overview-page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -411,10 +423,13 @@ canvas {
   margin-bottom: 10px;
 }
 
-#middle-page {
+#runner-page {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  gap: 40px;
+  padding: 40px;
+  width: 100%;
 }
 
 form {
@@ -500,13 +515,6 @@ form input[type="radio"]:checked + label.btn {
   color: white;
 }
 
-#middle-page {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
-  padding: 40px;
-  width: 100%;
-}
 
 .controls-box {
   width: 300px;
@@ -520,7 +528,7 @@ form input[type="radio"]:checked + label.btn {
   width: 100%;
   margin-top: 16px;
   padding: 10px;
-  background-color: var(--accent-color, teal);
+  background-color: #239e9e;
   color: white;
   font-weight: 600;
   border: none;
@@ -529,8 +537,26 @@ form input[type="radio"]:checked + label.btn {
 }
 
 #submit2:hover {
-  background-color: #007f7f;
+  background-color: teal;
 }
+
+#toggle-graph {
+  width: 100%;
+  margin-top: 24px;
+  padding: 10px;
+  background-color: #239e9e;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+}
+
+#toggle-graph:hover {
+  background-color: teal;
+}
+
 
 .right-panel {
   flex: 1;

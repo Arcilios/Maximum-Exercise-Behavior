@@ -13,24 +13,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="toc">
-  <h3>Contents</h3>
-  <ul>
-    <li><a href="#intro-page">Intro</a></li>
-    <li><a href="#description">Overview</a></li>
-    <li><a href="#histogram-page">Histogram</a></li>
-    <li><a href="#story-explanation">Explanation</a></li>
-    <li><a href="#middle-page">Runner Simulation</a></li>
-  </ul>
-</div>
   <div id="container">
     <div id="intro-page">
+      <button id="tocbtn" aria-label="toclabel" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <section id="toc">
+        <h3>Contents</h3>
+        <ul>
+          <li><a href="#intro-page">Intro</a></li>
+          <li><a href="#overview-page">Overview</a></li>
+          <li><a href="#histogram-page">Histogram</a></li>
+          <li><a href="#explanation-page">Explanation</a></li>
+          <li><a href="#runner-page">Runner Simulation</a></li>
+        </ul>
+      </section>
       <div id="title">
         <h1>How Long Can You Run?</h1>
         <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
       </div>
     </div>
-    <div id="description">
+    <div id="overview-page">
       <div class="intro-block">
         <p>
           Have you ever wondered how long you should run for? This project brings to life the data behind a large-scale treadmill exercise study. Using <a href="https://physionet.org/content/treadmill-exercise-cardioresp/1.0.1/" target="_blank">physiological records</a> from nearly 1,000 participants, we invite you to explore how different body types and environments affect endurance—and simulate what your own cardiopulmonary system might experience under maximal effort.
@@ -70,6 +75,10 @@
             </p>
             <svg id="histogram" width="700" height="400"></svg>
           </div>
+          <div class="chart">
+            <svg id="lineChart" width="700" height="400"></svg>
+          </div>
+        
           <div class="controls-left">
             <h2>Traits</h2>
             <div id="slider-block">
@@ -98,12 +107,13 @@
               <input type="radio" name="choice" id="female" value="1" hidden>
               <label for="female" class="btn">Female</label>
             </form>
+            <button id="toggle-graph">Toggle Graph</button>
               <br/>
           </div>
         </div>
       </div>
     </div>
-<div id="story-explanation">
+<div id="explanation-page">
   <div class="story-row">
     <div class="story-images">
       <img src="img/training.png" alt="Training" />
@@ -140,7 +150,7 @@
   </div>
 </div>
 
-<div id="middle-page">
+<div id="runner-page">
   <div class="controls-box">
     <h2>Runner Setup</h2>
 

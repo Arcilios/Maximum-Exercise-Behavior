@@ -326,7 +326,7 @@ function setupSliders(data) {
       me[key] = +slider.value;
       caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
       drawHistogram(data, key);
-
+      drawLineChart(dataset, data);
     });
   });
   
@@ -368,7 +368,6 @@ function setupSliders(data) {
   document.querySelectorAll('input[type="range"]').forEach(slider => {
     slider.addEventListener('input', () => {
       const gradient = (slider.value - slider.min) / (slider.max - slider.min) * 100 + '%';
-      console.log(gradient)
       slider.style.setProperty('--gradient', gradient);
     });
   });
@@ -546,6 +545,14 @@ function onStepEnter(response) {
   const sexForm = document.getElementById('sexForm');
   const sexElements = sexForm.elements;
   const radios = document.querySelectorAll('#sexForm input[type="radio"]');
+  const graph = document.querySelector('.graph');
+  const chart = document.querySelector('.chart');
+  const toggleBtn = document.getElementById('toggle-graph');
+  graph.style.display = 'none';
+  chart.style.display = 'none';
+  toggleBtn.style.display = 'none';
+  let currentData = {};
+
   if (id === "story-child") {
     ageSlider.value = 15;
     weightSlider.value = 50;
@@ -557,7 +564,19 @@ function onStepEnter(response) {
       sexElements[i].disabled = true;
       radios.forEach(radio => radio.checked = false);
     }
+    chart.style.display = 'block';
+
+    currentData = {
+      Age: 15,
+      Weight: 50,
+      Height: 155,
+      Sex: 0,
+      Temperature: 22,
+      Humidity: 40
+    };
+    drawLineChart(dataset, currentData);
   }
+
   if (id === "story-adult") {
     ageSlider.value = 30;
     weightSlider.value = 80;
@@ -569,7 +588,19 @@ function onStepEnter(response) {
       sexElements[i].disabled = true;
       radios.forEach(radio => radio.checked = false);
     }
+    chart.style.display = 'block';
+
+    currentData = {
+      Age: 30,
+      Weight: 80,
+      Height: 180,
+      Sex: 0,
+      Temperature: 22,
+      Humidity: 40
+    };
+    drawLineChart(dataset, currentData);
   }
+
   if (id === "story-old") {
     ageSlider.value = 50;
     weightSlider.value = 70;
@@ -581,7 +612,20 @@ function onStepEnter(response) {
       sexElements[i].disabled = true;
       radios.forEach(radio => radio.checked = false);
     }
+    chart.style.display = 'block';
+
+    currentData = {
+      Age: 50,
+      Weight: 70,
+      Height: 175,
+      Sex: 0,
+      Temperature: 22,
+      Humidity: 40
+    };
+    drawLineChart(dataset, currentData);
+
   }
+
   if (id === "story-any") {
     ageSlider.value = ageSlider.min;
     weightSlider.value = weightSlider.min;
@@ -591,6 +635,19 @@ function onStepEnter(response) {
     heightSlider.disabled = false;
     for (let i = 0; i < sexElements.length; i++) {
       sexElements[i].disabled = false;
+    }
+    graph.style.display = 'block';
+    chart.style.display = 'none';
+    toggleBtn.style.display = 'inline-block';
+
+    toggleBtn.onclick = () => {
+      if (graph.style.display === 'block') {
+        graph.style.display = 'none';
+        chart.style.display = 'block';
+      } else {
+        graph.style.display = 'block';
+        chart.style.display = 'none';
+      }
     }
   }
 
@@ -617,3 +674,114 @@ scroller
   
   .onStepExit(onStepExit)
   .onStepEnter(onStepEnter);
+
+const toc = document.getElementById('toc');
+const btn = document.getElementById('tocbtn');
+btn.addEventListener('click', () => {
+  const isHidden = toc.style.display === 'none' || toc.style.display === '';
+  toc.style.display = isHidden ? 'block' : 'none';
+  btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+});
+
+function drawLineChart(dataset, me) {
+  const svg = d3.select("#lineChart");
+  const width = +svg.attr("width") - 60;
+  const height = +svg.attr("height") - 60;
+  const margin = { top: 20, right: 40, bottom: 40, left: 60 };
+
+  svg.selectAll("*").remove(); // clear previous chart
+
+ 
+  const total = dataset.length;
+  const selectedIndices = new Set();
+  while (selectedIndices.size < 50 && selectedIndices.size < total) {
+    selectedIndices.add(Math.floor(Math.random() * total));
+  }
+  const selectedArray = Array.from(selectedIndices);
+
+  
+  const nearestPerson = findNearest(dataset, me);
+
+
+  const nearestIndex = dataset.findIndex(d => d === nearestPerson);
+
+  
+  if (!selectedIndices.has(nearestIndex)) {
+    selectedArray.push(nearestIndex);
+  }
+ 
+  const allTimePoints = [];
+  const allHRPoints = [];
+  selectedArray.forEach(idx => {
+    const person = dataset[idx];
+    if (!person || !Array.isArray(person.time_series)) return;
+    person.time_series.forEach(pt => {
+      if (pt && typeof pt.time === "number" && typeof pt.HR === "number") {
+        allTimePoints.push(pt.time);
+        allHRPoints.push(pt.HR);
+      }
+    });
+  });
+
+  // Scales
+  const xScale = d3.scaleLinear()
+    .domain(d3.extent(allTimePoints))
+    .range([margin.left, margin.left + width]);
+
+  const yScale = d3.scaleLinear()
+    .domain([d3.min(allHRPoints) * 0.95, d3.max(allHRPoints) * 1.05])
+    .range([margin.top + height, margin.top]);
+
+  // Axes
+  const xAxis = d3.axisBottom(xScale).ticks(10);
+  const yAxis = d3.axisLeft(yScale).ticks(10);
+
+  svg.append("g")
+    .attr("transform", `translate(0, ${margin.top + height})`)
+    .call(xAxis)
+    .append("text")
+    .attr("x", margin.left + width / 2)
+    .attr("y", 35)
+    .attr("fill", "black")
+    .attr("text-anchor", "middle")
+    .text("Time");
+
+  svg.append("g")
+    .attr("transform", `translate(${margin.left}, 0)`)
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -margin.top - height / 2)
+    .attr("y", -45)
+    .attr("fill", "black")
+    .attr("text-anchor", "middle")
+    .text("HR");
+
+  // Line generator
+  const lineGen = d3.line()
+    .x(d => xScale(d.time))
+    .y(d => yScale(d.HR))
+    .curve(d3.curveMonotoneX);
+
+  // 4. Draw lines for 50 people (light color)
+  selectedArray.forEach(idx => {
+    const person = dataset[idx];
+    const data = person?.time_series || [];
+
+    svg.append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", idx === nearestIndex ? "red" : "steelblue")
+      .attr("stroke-width", idx === nearestIndex ? 3 : 1)
+      .attr("opacity", idx === nearestIndex ? 1 : 0.3)
+      .attr("d", lineGen);
+  });
+
+  // 5. Legend for nearest person
+  svg.append("text")
+    .attr("x", margin.left + 10)
+    .attr("y", margin.top + 10)
+    .attr("fill", "red")
+    .style("font-weight", "bold")
+    .text("Nearest Person Highlighted");
+}

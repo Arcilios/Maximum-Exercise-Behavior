@@ -1,4 +1,4 @@
-#description {
+#overview-page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,17 +12,18 @@
   max-width: 600px;
 }
 
-#description p {
+#overview-page p {
   font-size: 1.3rem;
   line-height: 1.6;
   text-align: center;
 }
 
-#description img {
+#overview-page img {
   width: 100%;
   border-radius: 10px;
 }
-#story-explanation {
+
+#explanation-page {
   width: 100%;
   padding: 40px;
   box-sizing: border-box;
@@ -55,18 +56,40 @@
   line-height: 1.6;
   text-align: left;;
 }
-#story-explanation {
+#explanation-page {
   background-color: #f8f8f8;
   border-top: 2px solid #ddd;
 }
 
-#toc {
-  position: fixed;
-  top: 100px;
+#tocbtn {
+  position: absolute;
+  top: 20px;
   left: 20px;
+  width: 30px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#tocbtn .bar {
+  height: 4px;
+  border-radius: 2px;
+  background-color: rgb(24, 24, 24);
+}
+
+#toc {
+  position: absolute;
+  display: none;
+  top: 15px;
+  left: 55px;
   width: 160px;
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   padding: 10px 15px;
   z-index: 999;
   font-family: "Lexend", sans-serif;
@@ -100,6 +123,7 @@
 #toc a:hover {
   text-decoration: underline;
 }
+
 html {
   scroll-behavior: smooth;
 }
