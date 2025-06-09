@@ -28,17 +28,21 @@ body {
   scroll-snap-type: y proximity;
   > div {
     scroll-snap-align: center;
-    border-left: solid var(--accent-color) 10px;
-    border-right: solid var(--accent-color) 10px;
-    border-top: 0px;
     height: 100vh;
-    outline: solid red 1px;
+    /* outline: solid red 1px; */
   }
   > #histogram-page {
-    border-top: 0px;
     scroll-snap-align: none;
-    height: 160vh;
+    height: 220vh;
   }
+}
+
+#container > div:nth-child(odd) {
+  border: solid var(--accent-color) 30px;
+}
+
+#container > div:nth-child(even) {
+  border: solid var(--accent-color2) 30px;
 }
 
 #intro-page {
@@ -78,7 +82,6 @@ h3 {
 
 #histogram-page {
   width: 100%;
-  height: 200vh;
 }
 
 #scrolly1 {
@@ -86,23 +89,26 @@ h3 {
   justify-content: center;
   align-items: flex-start;
   gap: 20px;
-  padding: 30px auto;
   flex-wrap: wrap;
   position: relative;
-  min-height: calc(127vh - 3px);
+  min-height: 190vh;
 }
 
 .explanation {
   display: flex;
   flex-direction: column;
   width: 30%;
-  gap: 50px;
+  gap: 80px;
   padding-top: 30px;
   position: relative;
   > div {
     max-width: 100%;
     border: solid gray 1px;
   }
+}
+
+.story-step {
+  padding: 60px 0px;
 }
 
 .story-step p {
@@ -184,14 +190,19 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 16px;
   height: 16px;
-  background: rgb(160, 160, 160);
+  background: rgb(100, 100, 100);
   border-radius: 50%;
   cursor: pointer;
 }
 
-/* #sexSlider {
-  --gradient: 0%;
-} */
+input[type="range"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
 
 #temperatureSlider {
   --gradient: 41.18%;
@@ -226,6 +237,11 @@ form {
 
 .btn:last-child {
   border-right: none;
+}
+
+.input[type="radio"]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
 }
 
 input[type="radio"]:checked + label {

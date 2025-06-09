@@ -368,6 +368,7 @@ function setupSliders(data) {
   document.querySelectorAll('input[type="range"]').forEach(slider => {
     slider.addEventListener('input', () => {
       const gradient = (slider.value - slider.min) / (slider.max - slider.min) * 100 + '%';
+      console.log(gradient)
       slider.style.setProperty('--gradient', gradient);
     });
   });
@@ -527,14 +528,80 @@ document.getElementById("submit2").addEventListener("click", () => {
   ruochen(); // trigger animation
 });
 
+
+
+
 //scrollytelling
 function onStepEnter(response) {
   response.element.classList.add('active');
   const activeElement = document.querySelector('#scrolly1 .story-step.active');
-  if (activeElement) {
-    console.log(activeElement.id);
+  const id = activeElement.id;
+  function startGradient(slider) {
+    const gradient = ((slider.value - slider.min) / (slider.max - slider.min)) * 100 + '%';
+    slider.style.setProperty('--gradient', gradient);
   }
+  const ageSlider = document.getElementById('ageSlider');
+  const weightSlider = document.getElementById('weightSlider');
+  const heightSlider = document.getElementById('heightSlider');
+  const sexForm = document.getElementById('sexForm');
+  const sexElements = sexForm.elements;
+  const radios = document.querySelectorAll('#sexForm input[type="radio"]');
+  if (id === "story-child") {
+    ageSlider.value = 15;
+    weightSlider.value = 50;
+    heightSlider.value = 155;
+    ageSlider.disabled = true;
+    weightSlider.disabled = true;
+    heightSlider.disabled = true;
+    for (let i = 0; i < sexElements.length; i++) {
+      sexElements[i].disabled = true;
+      radios.forEach(radio => radio.checked = false);
+    }
+  }
+  if (id === "story-adult") {
+    ageSlider.value = 30;
+    weightSlider.value = 80;
+    heightSlider.value = 180;
+    ageSlider.disabled = true;
+    weightSlider.disabled = true;
+    heightSlider.disabled = true;
+    for (let i = 0; i < sexElements.length; i++) {
+      sexElements[i].disabled = true;
+      radios.forEach(radio => radio.checked = false);
+    }
+  }
+  if (id === "story-old") {
+    ageSlider.value = 50;
+    weightSlider.value = 70;
+    heightSlider.value = 175;
+    ageSlider.disabled = true;
+    weightSlider.disabled = true;
+    heightSlider.disabled = true;
+    for (let i = 0; i < sexElements.length; i++) {
+      sexElements[i].disabled = true;
+      radios.forEach(radio => radio.checked = false);
+    }
+  }
+  if (id === "story-any") {
+    ageSlider.value = ageSlider.min;
+    weightSlider.value = weightSlider.min;
+    heightSlider.value = heightSlider.min;
+    ageSlider.disabled = false;
+    weightSlider.disabled = false;
+    heightSlider.disabled = false;
+    for (let i = 0; i < sexElements.length; i++) {
+      sexElements[i].disabled = false;
+    }
+  }
+
+  startGradient(ageSlider);
+  startGradient(weightSlider);
+  startGradient(heightSlider);
+  document.getElementById('ageVal').textContent = `${ageSlider.value} years`;
+  document.getElementById('weightVal').textContent = `${weightSlider.value} kg`;
+  document.getElementById('heightVal').textContent = `${heightSlider.value} cm`;
 }
+
 function onStepExit(response) {
   response.element.classList.remove('active');
 }
@@ -544,7 +611,7 @@ scroller
   .setup({
     container: '#scrolly1',
     step: '#scrolly1 .story-step',
-    offset: 0.2,
+    offset: 0.25,
   })
   
   
