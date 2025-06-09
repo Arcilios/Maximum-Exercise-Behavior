@@ -5,6 +5,7 @@
   <title>Maximum Exercise Behavior</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script  type="module" src = 'story.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/+esm" type="module"></script>
   <script type="module" src="global.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,16 +13,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
-<body>
-  <div id="toc">
-  <h3>Contents</h3>
-  <ul>
-    <li><a href="#intro-page">Intro</a></li>
-    <li><a href="#description">Overview</a></li>
-    <li><a href="#histogram-page">Histogram</a></li>
-    <li><a href="#story-explanation">Explanation</a></li>
-    <li><a href="#middle-page">Runner Simulation</a></li>
-  </ul>
+<div id="toc-wrapper">
+  <button id="toggle-toc">➖</button>
+  <div id="emoji-toc">
+    <a href="#intro-page" title="Intro"><span class="emoji">🏠</span><span class="label">Intro</span></a>
+    <a href="#description" title="Overview"><span class="emoji">📄</span><span class="label">Overview</span></a>
+    <a href="#histogram-page" title="Histogram"><span class="emoji">📊</span><span class="label">Histogram</span></a>
+    <a href="#story-explanation" title="Explanation"><span class="emoji">🧠</span><span class="label">Explanation</span></a>
+    <a href="#middle-page" title="Runner Simulation"><span class="emoji">🏃</span><span class="label">Runner</span></a>
+  </div>
 </div>
   <div id="container">
     <div id="intro-page">
