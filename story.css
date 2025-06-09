@@ -1,0 +1,61 @@
+#description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  flex-wrap: wrap; /* 保证小屏幕时能换行 */
+}
+
+.intro-block {
+  flex: 1;
+  max-width: 600px;
+}
+
+#description p {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+#description img {
+  width: 100%;
+  border-radius: 10px;
+}
+#story-explanation {
+  width: 100%;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.story-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+}
+
+.story-images {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.story-images img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
+.story-text {
+  flex: 2;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  text-align: left;;
+}
+#story-explanation {
+  background-color: #f8f8f8;
+  border-top: 2px solid #ddd;
+}

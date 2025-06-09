@@ -14,6 +14,15 @@ let me = {
   Humidity: 40
 };
 
+let me2 = {
+  Age: 35,
+  Weight: 75,
+  Height: 175,
+  Sex: 0,
+  Temperature: 22,
+  Humidity: 40
+};
+
 async function loadCSV(file) {
   const cols = ['Age', 'HR', 'Height', 'ID', 'Sex', 'Weight', 'time', 'VO2', 'RR', 'VCO2', 'VE'];
   return await d3.csv(file, row => {
@@ -200,122 +209,6 @@ function drawHistogram(data, attribute) {
 }
 
 
-document.getElementById("submit").addEventListener("click", () => {
-  me.Temperature = +document.getElementById("temperatureSlider").value;
-  me.Humidity    = +document.getElementById("humiditySlider").value;
-
-  const nearest = findNearest(dataset, me);
-  
-/*
-  matched = dataset.find(p =>
-    Math.abs(p.features[0] - nearest.Age) < 2 &&
-    Math.abs(p.features[1] - nearest.Weight) < 2 &&
-    Math.abs(p.features[2] - nearest.Height) < 2 &&
-    Math.abs(p.features[3] - me.Humidity) < 2 &&
-    Math.abs(p.features[4] - me.Temperature) < 1 &&
-    p.features[5] == nearest.Sex
-  );
-  */
-  const matched = nearest;
-
-
-if (!matched) {
-  console.warn("No match found. Cannot generate charts.");
-
-  if (chart1Instance) {
-    chart1Instance.destroy();
-    chart1Instance = null;
-  }
-  if (chart2Instance) {
-    chart2Instance.destroy();
-    chart2Instance = null;
-  }
-  document.getElementById("chart1").getContext('2d').clearRect(0, 0, 600, 400);
-  document.getElementById("chart2").getContext('2d').clearRect(0, 0, 600, 400);
-  document.getElementById("organBox").style.display = "none";
-  document.getElementById("lungs").classList.add("paused");
-  document.getElementById("heart").classList.add("paused");
-  document.getElementById("animationArea").innerHTML = "";
-
-  const caption = document.getElementById("match");
-  caption.innerText = "⚠ No match found.";
-
-  return;
-}
-  const labels = matched.time_series.map(d => d.time);
-  const draw   = key => matched.time_series.map(d => d[key]);
-
-  if (chart1Instance) chart1Instance.destroy();
-  if (chart2Instance) chart2Instance.destroy();
-
-  chart1Instance = new Chart(document.getElementById("chart1"), {
-    type: "line",
-    data: {
-      labels,
-      datasets: [
-        { label: "HR (bpm)", data: draw("HR"), borderWidth: 2, pointRadius: 2 },
-        { label: "RR (breaths/min)", data: draw("RR"), borderWidth: 2, pointRadius: 2 },
-        { label: "VE (L/min)", data: draw("VE"), borderWidth: 2, pointRadius: 2 }
-      ]
-    },
-    options: {
-      onHover: (event, elements) => {
-        if (elements.length > 0) {
-          const idx = elements[0].index;
-          updateAnimationWithData(matched.time_series[idx]);
-          const caption = document.getElementById("match");
-          caption.innerText = 'HR: ' + matched.time_series[idx].HR +
-          ', RR: ' + matched.time_series[idx].RR +
-          ', VE: ' + matched.time_series[idx].VE +
-          ', VO2: ' + matched.time_series[idx].VO2 +
-          ', VCO2: ' + matched.time_series[idx].VCO2;
-        }
-      }
-    }
-  });
-
-chart2Instance = new Chart(document.getElementById("chart2"), {
-  type: "line",
-  data: {
-    labels,
-    datasets: [
-      {
-        label: "VO2 (mL/min)",
-        data: draw("VO2"),
-        borderWidth: 2,
-        pointRadius: 2,
-        borderColor: "blue",       
-        backgroundColor: "blue"
-      },
-      {
-        label: "VCO2 (mL/min)",
-        data: draw("VCO2"),
-        borderWidth: 2,
-        pointRadius: 2,
-        borderColor: "red",        
-        backgroundColor: "red"
-      }
-    ]
-  },
-  options: {
-    onHover: (event, elements) => {
-      if (elements.length > 0) {
-        const idx = elements[0].index;
-        updateAnimationWithData(matched.time_series[idx]);
-        const caption = document.getElementById("match");
-        caption.innerText = 'HR: ' + matched.time_series[idx].HR +
-          ', RR: ' + matched.time_series[idx].RR +
-          ', VE: ' + matched.time_series[idx].VE +
-          ', VO2: ' + matched.time_series[idx].VO2 +
-          ', VCO2: ' + matched.time_series[idx].VCO2;
-      }
-    }
-  }
-});
-
-
-  ruochen();
-});
 
 function findNearest(data, target) {
   let minDist = Infinity, best = null;
@@ -354,13 +247,11 @@ function ruochen() {
     b1.className = "bubble vo2";
     b1.style.left = `${20 + Math.random() * 30}px`;
     animArea.appendChild(b1);
-    setTimeout(() => b1.remove(), 3000);
 
     const b2 = document.createElement("div");
     b2.className = "bubble vco2";
     b2.style.left = `${60 + Math.random() * 30}px`;
     animArea.appendChild(b2);
-    setTimeout(() => b2.remove(), 3000);
 
     count++;
   }, 150);
@@ -481,6 +372,129 @@ function setupSliders(data) {
     });
   });
 }
+
+document.getElementById("ageSlider2").addEventListener("input", e => {
+  document.getElementById("ageVal2").textContent = e.target.value + " years";
+  me2.Age = +e.target.value;
+});
+
+document.getElementById("weightSlider2").addEventListener("input", e => {
+  document.getElementById("weightVal2").textContent = e.target.value + " kg";
+  me2.Weight = +e.target.value;
+});
+
+document.getElementById("heightSlider2").addEventListener("input", e => {
+  document.getElementById("heightVal2").textContent = e.target.value + " cm";
+  me2.Height = +e.target.value;
+});
+document.querySelectorAll('#sexForm2 input[name="choice2"]').forEach(radio => {
+  radio.addEventListener("change", () => {
+    me2.Sex = +radio.value;
+  });
+});
+document.getElementById("temperatureSlider2").addEventListener("input", e => {
+  document.getElementById("temperatureVal2").textContent = e.target.value + " °C";
+});
+
+document.getElementById("humiditySlider2").addEventListener("input", e => {
+  document.getElementById("humidityVal2").textContent = e.target.value + " %";
+});
+
+document.getElementById("submit2").addEventListener("click", () => {
+  me2.Temperature = +document.getElementById("temperatureSlider2").value;
+  me2.Humidity    = +document.getElementById("humiditySlider2").value;
+  
+  const nearest = findNearest(dataset, me2);
+  const matched = nearest;
+
+  if (!matched) {
+    console.warn("No match found. Cannot generate charts.");
+    if (chart1Instance) chart1Instance.destroy();
+    if (chart2Instance) chart2Instance.destroy();
+    document.getElementById("chart1").getContext('2d').clearRect(0, 0, 600, 400);
+    document.getElementById("chart2").getContext('2d').clearRect(0, 0, 600, 400);
+    document.getElementById("organBox").style.display = "none";
+    document.getElementById("lungs").classList.add("paused");
+    document.getElementById("heart").classList.add("paused");
+    document.getElementById("animationArea").innerHTML = "";
+    document.getElementById("match").innerText = "⚠ No match found.";
+    return;
+  }
+  document.getElementById("match").innerText = "Hover to see data";
+
+  const labels = matched.time_series.map(d => d.time);
+  const draw = key => matched.time_series.map(d => d[key]);
+
+  if (chart1Instance) chart1Instance.destroy();
+  if (chart2Instance) chart2Instance.destroy();
+
+  chart1Instance = new Chart(document.getElementById("chart1"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        { label: "HR (bpm)", data: draw("HR"), borderWidth: 2, pointRadius: 2 },
+        { label: "RR (breaths/min)", data: draw("RR"), borderWidth: 2, pointRadius: 2 },
+        { label: "VE (L/min)", data: draw("VE"), borderWidth: 2, pointRadius: 2 }
+      ]
+    },
+    options: {
+      onHover: (event, elements) => {
+        if (elements.length > 0) {
+          const idx = elements[0].index;
+          updateAnimationWithData(matched.time_series[idx]);
+          document.getElementById("match").innerText =
+            'HR: ' + matched.time_series[idx].HR +
+            ', RR: ' + matched.time_series[idx].RR +
+            ', VE: ' + matched.time_series[idx].VE +
+            ', VO2: ' + matched.time_series[idx].VO2 +
+            ', VCO2: ' + matched.time_series[idx].VCO2;
+        }
+      }
+    }
+  });
+
+  chart2Instance = new Chart(document.getElementById("chart2"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "VO2 (mL/min)",
+          data: draw("VO2"),
+          borderWidth: 2,
+          pointRadius: 2,
+          borderColor: "blue",
+          backgroundColor: "blue"
+        },
+        {
+          label: "VCO2 (mL/min)",
+          data: draw("VCO2"),
+          borderWidth: 2,
+          pointRadius: 2,
+          borderColor: "red",
+          backgroundColor: "red"
+        }
+      ]
+    },
+    options: {
+      onHover: (event, elements) => {
+        if (elements.length > 0) {
+          const idx = elements[0].index;
+          updateAnimationWithData(matched.time_series[idx]);
+          document.getElementById("match").innerText =
+            'HR: ' + matched.time_series[idx].HR +
+            ', RR: ' + matched.time_series[idx].RR +
+            ', VE: ' + matched.time_series[idx].VE +
+            ', VO2: ' + matched.time_series[idx].VO2 +
+            ', VCO2: ' + matched.time_series[idx].VCO2;
+        }
+      }
+    }
+  });
+
+  ruochen(); // trigger animation
+});
 
 //scrollytelling
 function onStepEnter(response) {

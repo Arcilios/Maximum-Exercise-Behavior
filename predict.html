@@ -4,44 +4,51 @@
   <meta charset="UTF-8" />
   <title>Maximum Exercise Behavior</title>
   <link rel="stylesheet" href="style.css" />
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7/+esm" type="module"></script>
-
   <script type="module" src="global.js"></script>
-
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href = "story.css"
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
   <div id="container">
-    <div id="intro-page">
-      <div id="title">
-        <h1>How Long Can You Run?</h1>
-        <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
-      </div>
-    </div>
-    
+<div id="intro-page">
+  <div id="title">
+    <h1>How Long Can You Run?</h1>
+    <h3>Created by Ruochen Li, Gavin Wu, Shawn Cheng, and Alexander Kuo</h3>
+  </div>
+</div>
+<div id="description">
+  <div class="intro-block">
+    <p>
+      This project brings to life the data behind a large-scale treadmill exercise study. Using real physiological records from nearly 1,000 participants, we invite you to explore how different body types and environments affect endurance—and simulate what your own cardiopulmonary system might experience under maximal effort.
+    </p>
+  </div>
+  <div class="intro-block">
+    <img src="img/treadmile.png" alt="Treadmill" />
+  </div>
+</div>
+
     <div id="histogram-page">
       <div id="scrolly1">
         <div class="moving explanation">
           <div class="story-step" id="story-child">
-            <h2>child</h2>
-            <p>set sliders to values a child would have and disable sliders<br><br><br><br><br><br><br><br><br><br><br><br></p>
+            <h2>Child</h2>
+            <p>Here’s what a typical child’s traits might look like. Scroll down to see how body size affects endurance potential. Sliders are locked in this mode.</p>
           </div>
           <div class="story-step" id="story-adult">
-            <h2>adult</h2>
-            <p>set sliders to values an adult would have and disable sliders</p><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h2>Adult</h2>
+            <p>Adult runner traits are typically taller and heavier. See how these settings shift your position in the histogram. Sliders are locked in this mode.</p>
           </div>
           <div class="story-step" id="story-old">
-            <h2>old</h2>
-            <p>set sliders to values an old guy would have and disable sliders</p><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h2>Old</h2>
+            <p>Older individuals may experience diminished VO₂ max and respiratory capacity. This step simulates their profile. Sliders are locked in this mode.</p>
           </div>
           <div class="story-step" id="story-any">
-            <h2>pick your own</h2>
-            <p>dont disable sliders</p><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h2>Pick Your Own</h2>
+            <p>Now it’s your turn. Set the sliders freely and observe how your body traits compare with elite endurance subjects.</p>
           </div>
         </div>
         <div class="sticky">
@@ -73,13 +80,6 @@
               </label>
               <em id="heightVal">175 cm</em>
             </div>
-            <!-- <div id="slider-block">
-              <br/>
-              <label for="sexSlider" id="sexLabel">Sex
-                <input class="slider-histogram" id="sexSlider" type="range" min="0" max="1" value="0" step="1" />
-              </label>
-              <em id="sexVal">Male</em>
-            </div> -->
             <form class="form-histogram" id="sexForm">
               <input type="radio" name="choice" id="male" value="0" hidden>
               <label for="male" class="btn">Male</label>
@@ -91,45 +91,124 @@
         </div>
       </div>
     </div>
-   
-    <div id="middle-page">
-      <div class="middle-section">
-        <div id="slider-block">
-          <label for="temperatureSlider" id="temperatureLabel">Temperature
-            <input class="slider-line" type="range" id="temperatureSlider" min="15" max="32" value="22" step="1"/>
-          </label>
-          <em id="temperatureVal">22 °C</em>
-        </div>
-        <div id="slider-block">
-          <label for="humiditySlider" id="humidityLabel">Humidity
-            <input class="slider-line" type="range" id="humiditySlider" min="24" max="69" value="40" />
-          </label>
-          <em id="humidityVal">40 %</em>
-        </div>
-        <button id="submit">Create Runner!</button>
-      </div>
-            <p id="match">
-            </p>
-            <div class="bottom-section">
-      <div class="chart-container">
-        <canvas id="chart1"></canvas>
-      </div>
-      <div class="chart-container">
-        <canvas id="chart2"></canvas>
-      </div>
-      <div class="organ-container">
-        <div class="img-holder" id="organBox" style="display: none;">
-          <img src="img/lung.png" id="lungs" class="breath paused" />
-          <img src="img/heart.png" id="heart" class="heartbeat paused" />
-        </div>
-        <div class="animation-container" id="animationArea"></div>
-      </div>
+<div id="story-explanation">
+  <div class="story-row">
+    <div class="story-images">
+      <img src="img/training.png" alt="Training" />
+      <img src="img/climate.png" alt="Climate" />
     </div>
+    <div class="story-text">
+<p>
+  Each runner’s ability to endure intense exercise is influenced by a combination of 
+  <strong>age, body size, sex, and environmental conditions</strong>. In this interactive section, 
+  you can fine-tune those characteristics and observe how they shape key physiological responses: 
+  <strong>Heart Rate (HR), Breathing Rate (RR), Ventilation (VE), VO₂, and VCO₂</strong>.
+</p>
+<br/>
+<p>
+  👉 <strong>Younger, lighter runners</strong> tend to have more efficient cardiopulmonary responses and 
+  may maintain lower heart and breathing rates for the same level of exertion.<br/>
+  👉 <strong>Hotter, more humid environments</strong> demand greater respiratory effort and cardiac output, 
+  placing extra stress on the lungs and heart.
+</p>
+<br/>
+<p>
+  For example, an older runner in a hot climate may reach peak ventilation levels much earlier 
+  than a younger individual in a cooler setting. These differences reflect real-world variability 
+  in how humans adapt to stress and physical load.
+</p>
+<br/>
+<p>
+  This simulation lets you explore how small changes in personal traits or environmental conditions 
+  can shift the body's performance during endurance training. Watch as the graphs and animations 
+  adjust in real time, helping you visualize the inner workings of the human cardiopulmonary system.
+</p>
+
     </div>
-    
+  </div>
+</div>
+
+<div id="middle-page">
+  <div class="controls-box">
+    <h2>Runner Setup</h2>
+
+    <div id="slider-block">
+      <label for="ageSlider2" id="ageLabel2">Age
+        <input class="slider-histogram" id="ageSlider2" type="range" min="10" max="59" value="35" />
+      </label>
+      <em id="ageVal2">35 years</em>
+    </div>
+
+    <div id="slider-block">
+      <label for="weightSlider2" id="weightLabel2">Weight
+        <input class="slider-histogram" id="weightSlider2" type="range" min="50" max="99" value="75" />
+      </label>
+      <em id="weightVal2">75 kg</em>
+    </div>
+
+    <div id="slider-block">
+      <label for="heightSlider2" id="heightLabel2">Height
+        <input class="slider-histogram" id="heightSlider2" type="range" min="150" max="199" value="175" />
+      </label>
+      <em id="heightVal2">175 cm</em>
+    </div>
+
+    <div id="slider-block">
+      <label for="temperatureSlider2" id="temperatureLabel2">Temperature
+        <input class="slider-line" id="temperatureSlider2" type="range" min="10" max="32" value="21" />
+      </label>
+      <em id="temperatureVal2">21 °C</em>
+    </div>
+
+    <div id="slider-block">
+      <label for="humiditySlider2" id="humidityLabel2">Humidity
+        <input class="slider-line" id="humiditySlider2" type="range" min="24" max="70" value="47" />
+      </label>
+      <em id="humidityVal2">47 %</em>
+    </div>
+
+<form id="sexForm2">
+  <input type="radio" name="choice2" id="male2" value="0" hidden />
+  <label for="male2" class="btn">Male</label>
+
+  <input type="radio" name="choice2" id="female2" value="1" hidden />
+  <label for="female2" class="btn">Female</label>
+</form>
+    <button id="submit2">Create Runner!</button>
+  </div>
+
+<div class="right-panel">
+<div class="top-row">
+  <p id="match">Please press "Create Runner!" to see your stats.</p>
+
+<div class="organ-container">
+  <div class="organ-row">
+    <div class="img-holder" id="organBox" >
+      <img src="img/lung.png" id="lungs" class="breath paused" />
+      <img src="img/heart.png" id="heart" class="heartbeat paused" />
+    </div>
+    <div class="animation-container" id="animationArea"></div>
+  </div>
+</div>
+</div>
+      <div class="bottom-section">
+        <div class="chart-container">
+          <canvas id="chart1"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart2"></canvas>
+        </div>
+<p>Left chart: How heart and lung activity respond during the run</p>
+<p>Right chart: How your body consumes oxygen (VO₂) and releases carbon dioxide (VCO₂)</p>
+<p>Animation: Brings your internal response to life—see your runner's heartbeat and breath in real-time</p>
+</p>
 
 
+      </div>
+    </div>
     <div class="tooltip" id="tooltip"></div>
+  </div>
+  </div>
   </div>
 </body>
 </html>
