@@ -145,7 +145,7 @@ h3 {
 }
 
 .chart {
-  display: none;
+  display: block;
   justify-content: start;
   justify-items: center;
   min-width: 700px;
