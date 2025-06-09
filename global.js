@@ -218,7 +218,7 @@ function findNearest(data, target) {
       (row.features[0] - target.Age) ** 2 +
       (row.features[1] - target.Weight) ** 2 +
       (row.features[2] - target.Height) ** 2 +
-      (row.features[3] - target.Humidity) ** 2 + //check
+      (row.features[3] - target.Humidity) ** 2 +
       (row.features[4] - target.Temperature) ** 2 +
       (row.features[5] - target.Sex) ** 2
     );
@@ -298,21 +298,29 @@ let activeLabel = null;
 
 function setupSliders(data) {
   const caption = document.getElementById("caption");
+  let currentData = {
+    Age: 35,
+    Weight: 75,
+    Height: 175,
+    Sex: 0,
+    Temperature: 22,
+    Humidity: 40
+  };
   document.querySelectorAll('.slider-histogram').forEach(slider => {
     const em = document.getElementById(slider.id.replace("Slider", "Val"));
     const label = document.querySelector(`label[for="${slider.id}"]`);
     slider.addEventListener('input', () => {  
-      // if (slider.id === "sexSlider") {
-      //   em.textContent = slider.value === "0" ? "Male" : "Female";
-      // }
       if (slider.id === "ageSlider") {
         em.textContent = slider.value + " years";
+        currentData.Age = slider.value
       }
       if (slider.id === "weightSlider") {
         em.textContent = slider.value + " kg";
+        currentData.Weight = slider.value
       }
       if (slider.id === "heightSlider") {
         em.textContent = slider.value + " cm";
+        currentData.Height = slider.value
       }
       if (activeLabel && activeLabel !== label) {
         activeLabel.style.fontWeight = 'normal';
@@ -326,7 +334,7 @@ function setupSliders(data) {
       me[key] = +slider.value;
       caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
       drawHistogram(data, key);
-      drawLineChart(dataset, data);
+      drawLineChart(dataset, currentData);
     });
   });
   
@@ -342,8 +350,11 @@ function setupSliders(data) {
       const attr = "sex";
       const key = attr.charAt(0).toUpperCase() + attr.slice(1);
       me[key] = +checkedRadio.value;
+      console.log(checkedRadio.value)
       caption.innerText = `The distribution of the top 100 longest lasting runners' ${attr.toLowerCase()} vs. your selected ${attr.toLowerCase()}.`;
       drawHistogram(data, key);
+      currentData.Sex = checkedRadio.value
+      drawLineChart(dataset, currentData)
     });
   });
 
@@ -691,7 +702,7 @@ function drawLineChart(dataset, me) {
 
   const nearestPerson = findNearest(dataset, me);
   const nearestIndex = dataset.findIndex(d => d === nearestPerson);
-
+  console.log(nearestIndex)
   if (nearestIndex >= 0 && !selectedIndices.has(nearestIndex)) {
     selectedArray.push(nearestIndex);
   }
